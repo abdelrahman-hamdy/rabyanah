@@ -1,0 +1,296 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    /* Font Families */
+    --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    --font-playfair: 'Playfair Display', ui-serif, Georgia, serif;
+    --font-montserrat: 'Montserrat', ui-sans-serif, system-ui, sans-serif;
+
+    /* Rabyanah Brand Colors - Blue */
+    --color-rabyanah-blue-50: #eff6ff;
+    --color-rabyanah-blue-100: #dbeafe;
+    --color-rabyanah-blue-200: #bfdbfe;
+    --color-rabyanah-blue-300: #93c5fd;
+    --color-rabyanah-blue-400: #60a5fa;
+    --color-rabyanah-blue-500: #3b82f6;
+    --color-rabyanah-blue-600: #2563eb;
+    --color-rabyanah-blue-700: #1d4ed8;
+    --color-rabyanah-blue-800: #1e40af;
+    --color-rabyanah-blue-900: #1e3a8a;
+    --color-rabyanah-blue-950: #172554;
+
+    /* Rabyanah Brand Colors - Red */
+    --color-rabyanah-red-50: #fef2f2;
+    --color-rabyanah-red-100: #fee2e2;
+    --color-rabyanah-red-200: #fecaca;
+    --color-rabyanah-red-300: #fca5a5;
+    --color-rabyanah-red-400: #f87171;
+    --color-rabyanah-red-500: #ef4444;
+    --color-rabyanah-red-600: #dc2626;
+    --color-rabyanah-red-700: #b91c1c;
+    --color-rabyanah-red-800: #991b1b;
+    --color-rabyanah-red-900: #7f1d1d;
+    --color-rabyanah-red-950: #450a0a;
+}
+
+/* ============================================
+   NAVBAR STYLES - Transparent to Sticky
+   ============================================ */
+
+/* Default state - Transparent on hero */
+#navbar {
+    background: transparent;
+}
+
+#navbar .nav-link {
+    @apply text-white/90 hover:text-white hover:bg-white/10;
+}
+
+#navbar .nav-pill {
+    @apply bg-white/10 border-white/20;
+}
+
+#navbar .nav-cta {
+    @apply bg-white text-rabyanah-blue-900;
+}
+
+#navbar .nav-logo {
+    @apply brightness-0 invert;
+}
+
+/* Scrolled state - Solid white */
+#navbar.scrolled {
+    @apply bg-white/95 backdrop-blur-xl shadow-lg shadow-black/5;
+}
+
+#navbar.scrolled .nav-link {
+    @apply text-gray-700 hover:text-rabyanah-blue-600 hover:bg-rabyanah-blue-50;
+}
+
+#navbar.scrolled .nav-pill {
+    @apply bg-gray-100 border-gray-200;
+}
+
+#navbar.scrolled .nav-cta {
+    @apply bg-rabyanah-red-600 text-white;
+}
+
+#navbar.scrolled .nav-logo {
+    @apply brightness-100 invert-0;
+}
+
+/* ============================================
+   SWIPER CUSTOMIZATION
+   ============================================ */
+
+.swiper-button-next,
+.swiper-button-prev {
+    @apply bg-white w-14 h-14 rounded-full shadow-xl transition-all hover:scale-110;
+}
+
+.swiper-button-next::after,
+.swiper-button-prev::after {
+    @apply text-lg font-bold text-rabyanah-blue-600;
+    font-size: 1rem !important;
+}
+
+.swiper-pagination-bullet {
+    @apply bg-rabyanah-blue-600 opacity-30 w-2.5 h-2.5 transition-all;
+}
+
+.swiper-pagination-bullet-active {
+    @apply opacity-100 bg-rabyanah-blue-600 w-8 rounded-full;
+}
+
+/* ============================================
+   CUSTOM SCROLLBAR
+   ============================================ */
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    @apply bg-gray-100;
+}
+
+::-webkit-scrollbar-thumb {
+    @apply bg-rabyanah-blue-300 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    @apply bg-rabyanah-blue-400;
+}
+
+/* ============================================
+   RTL SUPPORT
+   ============================================ */
+
+[dir="rtl"] .swiper-button-prev {
+    right: 10px;
+    left: auto;
+}
+
+[dir="rtl"] .swiper-button-next {
+    left: 10px;
+    right: auto;
+}
+
+/* ============================================
+   ANIMATIONS & EFFECTS
+   ============================================ */
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* Fade In Animation */
+.fade-in {
+    animation: fadeIn 0.6s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Slow Pulse Animation */
+@keyframes pulse-slow {
+    0%, 100% {
+        opacity: 0.2;
+    }
+    50% {
+        opacity: 0.3;
+    }
+}
+
+.animate-pulse-slow {
+    animation: pulse-slow 4s ease-in-out infinite;
+}
+
+/* Staggered Fade In */
+.stagger-fade-in > * {
+    opacity: 0;
+    animation: fadeIn 0.5s ease-out forwards;
+}
+
+.stagger-fade-in > *:nth-child(1) { animation-delay: 0.1s; }
+.stagger-fade-in > *:nth-child(2) { animation-delay: 0.2s; }
+.stagger-fade-in > *:nth-child(3) { animation-delay: 0.3s; }
+.stagger-fade-in > *:nth-child(4) { animation-delay: 0.4s; }
+.stagger-fade-in > *:nth-child(5) { animation-delay: 0.5s; }
+.stagger-fade-in > *:nth-child(6) { animation-delay: 0.6s; }
+
+/* Floating Animation */
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.animate-float {
+    animation: float 3s ease-in-out infinite;
+}
+
+/* Gradient Text Animation */
+.gradient-text-animate {
+    background-size: 200% auto;
+    animation: gradient-shift 3s ease infinite;
+}
+
+@keyframes gradient-shift {
+    0% {
+        background-position: 0% center;
+    }
+    50% {
+        background-position: 100% center;
+    }
+    100% {
+        background-position: 0% center;
+    }
+}
+
+/* ============================================
+   SECTION TRANSITIONS
+   ============================================ */
+
+section {
+    @apply relative;
+}
+
+/* Premium Card Hover Effects */
+.premium-card {
+    @apply transition-all duration-500;
+}
+
+.premium-card:hover {
+    @apply -translate-y-2;
+}
+
+/* Glass Effect */
+.glass {
+    @apply bg-white/10 backdrop-blur-xl border border-white/20;
+}
+
+.glass-dark {
+    @apply bg-black/10 backdrop-blur-xl border border-black/10;
+}
+
+/* ============================================
+   FORM STYLING
+   ============================================ */
+
+.form-input {
+    @apply w-full px-5 py-4 bg-white border-2 border-gray-100 rounded-xl text-gray-900 placeholder-gray-400 transition-all duration-300;
+}
+
+.form-input:focus {
+    @apply border-rabyanah-blue-500 ring-4 ring-rabyanah-blue-500/10 outline-none;
+}
+
+.form-input:hover:not(:focus) {
+    @apply border-gray-200;
+}
+
+/* ============================================
+   BUTTON STYLES
+   ============================================ */
+
+.btn-primary {
+    @apply inline-flex items-center justify-center px-8 py-4 bg-rabyanah-blue-600 text-white font-semibold rounded-full transition-all duration-300 hover:bg-rabyanah-blue-700 hover:shadow-xl hover:shadow-rabyanah-blue-600/25 hover:-translate-y-0.5;
+}
+
+.btn-secondary {
+    @apply inline-flex items-center justify-center px-8 py-4 bg-white text-rabyanah-blue-900 font-semibold rounded-full border-2 border-gray-100 transition-all duration-300 hover:border-rabyanah-blue-600 hover:text-rabyanah-blue-600 hover:-translate-y-0.5;
+}
+
+.btn-accent {
+    @apply inline-flex items-center justify-center px-8 py-4 bg-rabyanah-red-600 text-white font-semibold rounded-full transition-all duration-300 hover:bg-rabyanah-red-700 hover:shadow-xl hover:shadow-rabyanah-red-600/25 hover:-translate-y-0.5;
+}
+
+/* ============================================
+   SECTION DIVIDERS
+   ============================================ */
+
+.section-divider {
+    @apply relative;
+}
+
+.section-divider::before {
+    content: '';
+    @apply absolute top-0 left-1/2 -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-rabyanah-blue-600 to-rabyanah-red-600 rounded-full;
+}
