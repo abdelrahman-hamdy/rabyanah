@@ -5,36 +5,6 @@
         <div class="absolute bottom-0 left-1/4 w-[400px] h-[400px] bg-rabyanah-red-500/5 rounded-full blur-3xl"></div>
     </div>
 
-    <!-- Newsletter Section -->
-    <div class="relative border-b border-white/10">
-        <div class="container mx-auto px-4 lg:px-8 py-16">
-            <div class="bg-gradient-to-r from-rabyanah-blue-600 to-rabyanah-blue-700 rounded-3xl p-8 lg:p-12 relative overflow-hidden">
-                <!-- Decorative -->
-                <div class="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
-                <div class="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2"></div>
-
-                <div class="relative flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
-                    <div class="lg:max-w-lg">
-                        <h3 class="text-2xl lg:text-3xl font-bold text-white mb-2">
-                            {{ __('Stay Updated') }}
-                        </h3>
-                        <p class="text-blue-100/80">
-                            {{ __('Subscribe to our newsletter for the latest products, industry news, and exclusive offers.') }}
-                        </p>
-                    </div>
-                    <form class="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
-                        <input type="email"
-                               placeholder="{{ __('Enter your email') }}"
-                               class="flex-1 lg:w-80 px-6 py-4 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:border-white/40 focus:ring-2 focus:ring-white/20 transition-all">
-                        <button type="submit" class="px-8 py-4 bg-white text-rabyanah-blue-600 font-semibold rounded-xl hover:bg-gray-100 transition-all duration-300 shadow-lg shadow-black/10 hover:-translate-y-0.5 whitespace-nowrap">
-                            {{ __('Subscribe') }}
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Main Footer -->
     <div class="relative container mx-auto px-4 lg:px-8 py-16 lg:py-20">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8">

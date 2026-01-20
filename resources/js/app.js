@@ -130,44 +130,139 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // ============================================
-    // SCROLL ANIMATIONS - Intersection Observer
+    // PREMIUM SCROLL ANIMATIONS
+    // Advanced Intersection Observer System
     // ============================================
-    const observerOptions = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.1
+
+    // Configuration for different animation types
+    const animationConfig = {
+        default: { threshold: 0.15, rootMargin: '0px 0px -50px 0px' },
+        eager: { threshold: 0.05, rootMargin: '0px 0px -20px 0px' },
+        lazy: { threshold: 0.3, rootMargin: '0px 0px -100px 0px' },
     };
 
-    const animateOnScroll = new IntersectionObserver((entries) => {
+    // Create observers for different configurations
+    const createObserver = (config, callback) => {
+        return new IntersectionObserver(callback, {
+            root: null,
+            rootMargin: config.rootMargin,
+            threshold: config.threshold
+        });
+    };
+
+    // Main animation observer
+    const animateOnScroll = createObserver(animationConfig.default, (entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                entry.target.classList.add('fade-in');
+                // Get delay from data attribute
+                const delay = entry.target.dataset.delay || 0;
+
+                setTimeout(() => {
+                    entry.target.classList.add('animated');
+                }, parseInt(delay));
+
                 animateOnScroll.unobserve(entry.target);
             }
         });
-    }, observerOptions);
-
-    // Observe elements with data-animate attribute
-    document.querySelectorAll('[data-animate]').forEach(el => {
-        el.style.opacity = '0';
-        animateOnScroll.observe(el);
     });
 
+    // Observer for staggered children animations
+    const childrenObserver = createObserver(animationConfig.default, (entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animated');
+                childrenObserver.unobserve(entry.target);
+            }
+        });
+    });
+
+    // Observer for grid animations
+    const gridObserver = createObserver(animationConfig.eager, (entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animated');
+                gridObserver.unobserve(entry.target);
+            }
+        });
+    });
+
+    // Initialize all animations
+    const initScrollAnimations = () => {
+        // Single element animations
+        document.querySelectorAll('[data-animate]').forEach(el => {
+            animateOnScroll.observe(el);
+        });
+
+        // Staggered children animations
+        document.querySelectorAll('[data-animate-children]').forEach(el => {
+            childrenObserver.observe(el);
+        });
+
+        // Grid animations
+        document.querySelectorAll('[data-animate-grid]').forEach(el => {
+            gridObserver.observe(el);
+        });
+    };
+
+    initScrollAnimations();
+
     // ============================================
-    // COUNTER ANIMATION
+    // PARALLAX EFFECT FOR BACKGROUNDS
+    // ============================================
+    const parallaxElements = document.querySelectorAll('.parallax-bg');
+
+    if (parallaxElements.length > 0) {
+        let ticking = false;
+
+        const updateParallax = () => {
+            const scrollY = window.pageYOffset;
+
+            parallaxElements.forEach(el => {
+                const speed = el.dataset.speed || 0.3;
+                const rect = el.getBoundingClientRect();
+                const elementTop = rect.top + scrollY;
+                const elementCenter = elementTop + rect.height / 2;
+                const viewportCenter = scrollY + window.innerHeight / 2;
+                const distance = viewportCenter - elementCenter;
+                const movement = distance * speed * 0.1;
+
+                el.style.transform = `translateY(${movement}px)`;
+            });
+
+            ticking = false;
+        };
+
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                requestAnimationFrame(updateParallax);
+                ticking = true;
+            }
+        }, { passive: true });
+    }
+
+    // ============================================
+    // COUNTER ANIMATION (Enhanced)
     // ============================================
     const animateCounter = (element, target, duration = 2000) => {
-        let start = 0;
-        const increment = target / (duration / 16);
-        const timer = setInterval(() => {
-            start += increment;
-            if (start >= target) {
-                element.textContent = target + '+';
-                clearInterval(timer);
-            } else {
-                element.textContent = Math.floor(start) + '+';
+        const startTime = performance.now();
+        const startValue = 0;
+
+        const easeOutQuart = (t) => 1 - Math.pow(1 - t, 4);
+
+        const updateCounter = (currentTime) => {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const easedProgress = easeOutQuart(progress);
+            const currentValue = Math.floor(startValue + (target - startValue) * easedProgress);
+
+            element.textContent = currentValue + '+';
+
+            if (progress < 1) {
+                requestAnimationFrame(updateCounter);
             }
-        }, 16);
+        };
+
+        requestAnimationFrame(updateCounter);
     };
 
     // Observe counter elements
@@ -176,6 +271,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (entry.isIntersecting) {
                 const target = parseInt(entry.target.dataset.count);
                 if (target) {
+                    entry.target.classList.add('animated');
                     animateCounter(entry.target, target);
                     counterObserver.unobserve(entry.target);
                 }
@@ -185,6 +281,49 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.querySelectorAll('[data-count]').forEach(el => {
         counterObserver.observe(el);
+    });
+
+    // ============================================
+    // MAGNETIC HOVER EFFECT (for buttons)
+    // ============================================
+    const magneticElements = document.querySelectorAll('[data-magnetic]');
+
+    magneticElements.forEach(el => {
+        el.addEventListener('mousemove', (e) => {
+            const rect = el.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+            const strength = el.dataset.magnetic || 0.3;
+
+            el.style.transform = `translate(${x * strength}px, ${y * strength}px)`;
+        });
+
+        el.addEventListener('mouseleave', () => {
+            el.style.transform = 'translate(0, 0)';
+            el.style.transition = 'transform 0.3s ease-out';
+        });
+
+        el.addEventListener('mouseenter', () => {
+            el.style.transition = 'none';
+        });
+    });
+
+    // ============================================
+    // TEXT SPLIT ANIMATION HELPER
+    // ============================================
+    const splitTextElements = document.querySelectorAll('[data-split-text]');
+
+    splitTextElements.forEach(el => {
+        const text = el.textContent;
+        const words = text.split(' ');
+        el.innerHTML = '';
+
+        words.forEach((word, index) => {
+            const span = document.createElement('span');
+            span.textContent = word + ' ';
+            span.style.transitionDelay = `${index * 0.05}s`;
+            el.appendChild(span);
+        });
     });
 
 });

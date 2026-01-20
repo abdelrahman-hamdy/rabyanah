@@ -5,11 +5,11 @@
     {{-- Featured Products Section --}}
     <x-home.featured-products :products="$featuredProducts" />
 
-    {{-- About Section --}}
-    <x-home.about />
-
     {{-- Products Section with Category Filter --}}
     <x-home.products :products="$products" :categories="$categories" />
+
+    {{-- Categories Section --}}
+    <x-home.categories :categories="$categories" />
 
     {{-- Brands Section --}}
     <x-home.brands :brands="$brands" />
