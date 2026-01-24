@@ -18,6 +18,7 @@ class CategoriesTable
         return $table
             ->columns([
                 ImageColumn::make('image')
+                    ->disk('public')
                     ->circular()
                     ->defaultImageUrl(fn () => 'https://ui-avatars.com/api/?name=C&color=FFFFFF&background=2563eb'),
                 TextColumn::make('name')

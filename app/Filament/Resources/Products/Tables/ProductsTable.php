@@ -25,6 +25,7 @@ class ProductsTable
             ->columns([
                 ImageColumn::make('gallery')
                     ->label('Image')
+                    ->disk('public')
                     ->circular()
                     ->getStateUsing(fn ($record) => $record->gallery[0] ?? null)
                     ->defaultImageUrl(fn () => 'https://ui-avatars.com/api/?name=P&color=FFFFFF&background=2563eb'),
