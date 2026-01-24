@@ -917,9 +917,14 @@ section {
    PRODUCT GALLERY STYLES
    ============================================ */
 
+/* Product Gallery Wrapper - Mobile Fix */
+.product-gallery-wrapper {
+    @apply w-full max-w-full overflow-hidden;
+}
+
 /* Main Gallery Swiper */
 .product-gallery-main {
-    @apply rounded-2xl overflow-hidden bg-gray-100;
+    @apply rounded-2xl overflow-hidden bg-gray-100 w-full max-w-full;
 }
 
 .product-gallery-main .swiper-slide {

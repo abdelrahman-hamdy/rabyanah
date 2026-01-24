@@ -45,11 +45,11 @@
                 @php
                     $galleryImages = $product->gallery_urls;
                 @endphp
-                <div class="product-gallery-wrapper">
+                <div class="product-gallery-wrapper w-full max-w-full overflow-hidden">
                     @if(count($galleryImages) > 0)
                         <!-- Main Gallery Swiper -->
-                        <div class="relative">
-                            <div class="swiper product-gallery-main aspect-square">
+                        <div class="relative w-full max-w-full">
+                            <div class="swiper product-gallery-main aspect-square w-full max-w-full overflow-hidden rounded-2xl">
                                 <div class="swiper-wrapper">
                                     @foreach($galleryImages as $index => $image)
                                     <div class="swiper-slide">
