@@ -11,7 +11,6 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ReplicateAction;
 use Filament\Notifications\Notification;
-use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -68,7 +67,7 @@ class ProductsTable
             ->recordActions([
                 Action::make('toggleFeatured')
                     ->label(fn (Product $record): string => $record->is_featured ? 'Remove from Featured' : 'Add to Featured')
-                    ->icon(fn (Product $record): Heroicon => $record->is_featured ? Heroicon::SolidStar : Heroicon::OutlinedStar)
+                    ->icon(fn (Product $record): string => $record->is_featured ? 'heroicon-s-star' : 'heroicon-o-star')
                     ->color(fn (Product $record): string => $record->is_featured ? 'warning' : 'gray')
                     ->action(function (Product $record): void {
                         $record->update(['is_featured' => ! $record->is_featured]);
