@@ -11,7 +11,7 @@
         <div class="mt-12">
             <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 lg:gap-4">
                 @foreach($categories as $category)
-                <a href="{{ route('products.index', ['category' => $category->slug]) }}"
+                <a href="{{ route('products.index', ['category' => $category->slug]) }}#products-section"
                    class="group relative block">
                     <!-- Card Container -->
                     <div class="relative aspect-[4/5] rounded-xl overflow-hidden bg-gradient-to-br from-gray-100 to-gray-50 shadow-[0_4px_15px_rgb(0,0,0,0.06)] hover:shadow-[0_10px_30px_rgb(37,99,235,0.15)] transition-all duration-500 {{ request('category') === $category->slug ? 'border-2 border-rabyanah-blue-500' : '' }}">
@@ -64,7 +64,7 @@
             <!-- View All / Clear Filter -->
             @if(request('category'))
             <div class="text-center mt-6">
-                <a href="{{ route('products.index') }}"
+                <a href="{{ route('products.index') }}#products-section"
                    class="inline-flex items-center gap-2 text-rabyanah-blue-600 hover:text-rabyanah-blue-700 font-semibold transition-all duration-300 group hover:-translate-y-0.5">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
@@ -78,7 +78,7 @@
     </x-ui.archive-hero>
 
     <!-- Products Section -->
-    <section class="pb-20 md:pb-28" style="background-color: #ffffff; padding-top: 80px;">
+    <section id="products-section" class="pb-20 md:pb-28" style="background-color: #ffffff; padding-top: 80px;">
         <div class="container mx-auto px-4 lg:px-8">
             <!-- Filters Bar -->
             <div class="bg-gray-50 rounded-2xl border border-gray-100 p-5 md:p-6 mb-10">
