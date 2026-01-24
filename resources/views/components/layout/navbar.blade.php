@@ -16,7 +16,7 @@
             <!-- Desktop Navigation -->
             <div class="hidden lg:flex items-center">
                 <div class="flex items-center space-x-1 rtl:space-x-reverse bg-white/10 backdrop-blur-md rounded-full px-2 py-2 nav-pill">
-                    <a href="#home" class="nav-link px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300">
+                    <a href="{{ route('home') }}" class="nav-link px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300">
                         {{ __('Home') }}
                     </a>
                     <a href="{{ route('products.index') }}" class="nav-link px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300">
@@ -89,7 +89,7 @@
                 </form>
 
                 <div class="flex flex-col space-y-2">
-                    <a href="#home" class="font-medium text-gray-800 hover:text-rabyanah-blue-600 hover:bg-rabyanah-blue-50 px-4 py-3 rounded-xl transition-all duration-300">
+                    <a href="{{ route('home') }}" class="font-medium text-gray-800 hover:text-rabyanah-blue-600 hover:bg-rabyanah-blue-50 px-4 py-3 rounded-xl transition-all duration-300">
                         {{ __('Home') }}
                     </a>
                     <a href="{{ route('products.index') }}" class="font-medium text-gray-800 hover:text-rabyanah-blue-600 hover:bg-rabyanah-blue-50 px-4 py-3 rounded-xl transition-all duration-300">

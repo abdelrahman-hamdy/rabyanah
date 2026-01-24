@@ -189,7 +189,7 @@
     </section>
 
     <!-- Product Inquiry Modal -->
-    <div id="productInquiryModal" class="fixed inset-0 z-50 hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div id="productInquiryModal" class="fixed inset-0 z-[60] hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
         <!-- Backdrop -->
         <div id="modalBackdrop" class="fixed inset-0 bg-gray-900/70 backdrop-blur-sm transition-opacity duration-300 opacity-0" onclick="closeProductInquiryModal()"></div>
 
