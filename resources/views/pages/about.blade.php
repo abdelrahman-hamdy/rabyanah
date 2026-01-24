@@ -51,11 +51,13 @@
     {{-- Cover Image Section --}}
     @if($coverImage)
     <section class="relative -mt-8">
-        <div class="relative aspect-[21/9]">
-            <img src="{{ Storage::url($coverImage) }}"
-                 alt="{{ __('About Rabyanah') }}"
-                 class="w-full h-full object-cover">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent"></div>
+        <div class="container mx-auto px-4 lg:px-8">
+            <div class="relative rounded-2xl overflow-hidden shadow-xl">
+                <img src="{{ Storage::url($coverImage) }}"
+                     alt="{{ __('About Rabyanah') }}"
+                     class="w-full h-auto">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent"></div>
+            </div>
         </div>
     </section>
     @endif
