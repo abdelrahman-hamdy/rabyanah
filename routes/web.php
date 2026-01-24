@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 
 // Home Page
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/api/catalog-products', [HomeController::class, 'catalogProducts'])->name('api.catalog-products');
 
 // About Page
 Route::get('/about', [AboutController::class, 'index'])->name('about');

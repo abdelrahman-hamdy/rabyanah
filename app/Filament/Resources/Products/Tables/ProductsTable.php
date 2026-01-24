@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Products\Tables;
 
 use App\Models\Product;
+use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
@@ -10,6 +11,7 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ReplicateAction;
 use Filament\Notifications\Notification;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -64,6 +66,19 @@ class ProductsTable
                     ->label('Active'),
             ])
             ->recordActions([
+                Action::make('toggleFeatured')
+                    ->label(fn (Product $record): string => $record->is_featured ? 'Remove from Featured' : 'Add to Featured')
+                    ->icon(fn (Product $record): Heroicon => $record->is_featured ? Heroicon::SolidStar : Heroicon::OutlinedStar)
+                    ->color(fn (Product $record): string => $record->is_featured ? 'warning' : 'gray')
+                    ->action(function (Product $record): void {
+                        $record->update(['is_featured' => ! $record->is_featured]);
+
+                        Notification::make()
+                            ->success()
+                            ->title($record->is_featured ? 'Added to Featured' : 'Removed from Featured')
+                            ->body("Product \"{$record->name}\" has been ".($record->is_featured ? 'added to' : 'removed from').' featured products.')
+                            ->send();
+                    }),
                 EditAction::make(),
                 ActionGroup::make([
                     ReplicateAction::make()

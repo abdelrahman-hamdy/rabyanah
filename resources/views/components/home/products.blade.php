@@ -20,47 +20,57 @@
             </p>
         </div>
 
-        <!-- Category Filters -->
-        @if($categories->count() > 0)
-        <div x-data="categoryFilter()" class="mb-16" data-animate="fade-up" data-delay="300">
-            <div class="flex flex-wrap justify-center gap-3">
-                <button @click="setCategory('all')"
-                        :class="active === 'all' ? 'bg-rabyanah-blue-600 text-white shadow-lg shadow-rabyanah-blue-600/25' : 'bg-white text-gray-600 hover:text-rabyanah-blue-600 hover:border-rabyanah-blue-200 border border-gray-200'"
-                        class="px-6 py-3 rounded-full font-medium transition-all duration-300">
-                    {{ __('All Categories') }}
-                </button>
-                @foreach($categories->take(5) as $category)
-                <button @click="setCategory('{{ $category->slug }}')"
-                        :class="active === '{{ $category->slug }}' ? 'bg-rabyanah-blue-600 text-white shadow-lg shadow-rabyanah-blue-600/25' : 'bg-white text-gray-600 hover:text-rabyanah-blue-600 hover:border-rabyanah-blue-200 border border-gray-200'"
-                        class="px-6 py-3 rounded-full font-medium transition-all duration-300">
-                    {{ $category->localized_name }}
-                </button>
-                @endforeach
+        <!-- Category Filters & Products Grid with AJAX -->
+        <div x-data="catalogFilter()" x-init="init()" class="mb-16">
+            <!-- Category Filters -->
+            @if($categories->count() > 0)
+            <div class="mb-16" data-animate="fade-up" data-delay="300">
+                <div class="flex flex-wrap justify-center gap-3">
+                    <button @click="loadCategory('all')"
+                            :class="active === 'all' ? 'bg-rabyanah-blue-600 text-white shadow-lg shadow-rabyanah-blue-600/25' : 'bg-white text-gray-600 hover:text-rabyanah-blue-600 hover:border-rabyanah-blue-200 border border-gray-200'"
+                            :disabled="loading"
+                            class="px-6 py-3 rounded-full font-medium transition-all duration-300 disabled:opacity-50">
+                        {{ __('All Categories') }}
+                    </button>
+                    @foreach($categories->take(5) as $category)
+                    <button @click="loadCategory('{{ $category->slug }}')"
+                            :class="active === '{{ $category->slug }}' ? 'bg-rabyanah-blue-600 text-white shadow-lg shadow-rabyanah-blue-600/25' : 'bg-white text-gray-600 hover:text-rabyanah-blue-600 hover:border-rabyanah-blue-200 border border-gray-200'"
+                            :disabled="loading"
+                            class="px-6 py-3 rounded-full font-medium transition-all duration-300 disabled:opacity-50">
+                        {{ $category->localized_name }}
+                    </button>
+                    @endforeach
+                </div>
             </div>
-        </div>
-        @endif
+            @endif
 
-        <!-- Products Grid -->
-        @if($products->count() > 0)
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8 pt-4" data-animate-grid>
-            @foreach($products as $product)
-            <div data-category="{{ $product->category?->slug }}" class="transition-all duration-300 opacity-100 scale-100">
-                <x-ui.product-card :product="$product" />
+            <!-- Products Grid -->
+            <div class="relative min-h-[400px]">
+                <!-- Loading Overlay -->
+                <div x-show="loading" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" class="absolute inset-0 bg-gray-50/80 flex items-center justify-center z-10 rounded-2xl">
+                    <div class="flex flex-col items-center gap-3">
+                        <svg class="animate-spin h-10 w-10 text-rabyanah-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        <span class="text-gray-600 font-medium">{{ __('Loading...') }}</span>
+                    </div>
+                </div>
+
+                <!-- Products Container -->
+                <div id="products-grid"
+                     x-ref="productsGrid"
+                     class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8 pt-4"
+                     :class="{ 'opacity-50': loading }"
+                     data-animate-grid>
+                    @foreach($products as $product)
+                    <div class="product-item transition-all duration-300">
+                        <x-ui.product-card :product="$product" />
+                    </div>
+                    @endforeach
+                </div>
             </div>
-            @endforeach
         </div>
-        @else
-        <!-- Empty State -->
-        <div class="text-center py-16">
-            <div class="inline-flex items-center justify-center w-24 h-24 bg-gray-100 rounded-full mb-6">
-                <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
-                </svg>
-            </div>
-            <h3 class="text-xl font-semibold text-gray-900 mb-2">{{ __('No Products Available') }}</h3>
-            <p class="text-gray-500">{{ __('Products will be displayed here once they are added.') }}</p>
-        </div>
-        @endif
 
         <!-- Explore All Products Button -->
         <div class="text-center mt-16" data-animate="fade-up" data-delay="400">
@@ -74,3 +84,62 @@
         </div>
     </div>
 </section>
+
+@pushOnce('scripts')
+<script>
+function catalogFilter() {
+    return {
+        active: 'all',
+        loading: false,
+        cache: {},
+
+        init() {
+            // Pre-cache the initial 'all' category HTML
+            this.cache['all'] = this.$refs.productsGrid.innerHTML;
+        },
+
+        async loadCategory(category) {
+            if (this.active === category || this.loading) return;
+
+            this.active = category;
+
+            // Check cache first
+            if (this.cache[category]) {
+                this.$refs.productsGrid.innerHTML = this.cache[category];
+                return;
+            }
+
+            this.loading = true;
+
+            try {
+                const response = await fetch(`{{ route('api.catalog-products') }}?category=${category}`, {
+                    headers: {
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                });
+
+                if (!response.ok) throw new Error('Network response was not ok');
+
+                const data = await response.json();
+
+                // Cache the response
+                this.cache[category] = data.html;
+
+                // Update the grid with animation
+                this.$refs.productsGrid.style.opacity = '0';
+                await new Promise(r => setTimeout(r, 150));
+
+                this.$refs.productsGrid.innerHTML = data.html;
+
+                this.$refs.productsGrid.style.opacity = '1';
+            } catch (error) {
+                console.error('Error loading products:', error);
+            } finally {
+                this.loading = false;
+            }
+        }
+    }
+}
+</script>
+@endPushOnce
