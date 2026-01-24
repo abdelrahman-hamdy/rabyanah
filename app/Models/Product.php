@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class Product extends Model
@@ -14,15 +15,11 @@ class Product extends Model
         'slug',
         'description',
         'description_ar',
-        'short_description',
-        'short_description_ar',
-        'image',
         'gallery',
         'brand_id',
         'category_id',
         'is_featured',
         'is_active',
-        'sort_order',
     ];
 
     protected $casts = [
@@ -64,7 +61,7 @@ class Product extends Model
 
     public function scopeOrdered($query)
     {
-        return $query->orderBy('sort_order');
+        return $query->orderBy('created_at', 'desc');
     }
 
     public function scopeInCategory($query, $categorySlug)
@@ -74,20 +71,46 @@ class Product extends Model
         });
     }
 
+    /**
+     * Get the main image URL (first image from gallery)
+     */
     public function getImageUrlAttribute(): ?string
     {
-        return $this->image ? asset('storage/' . $this->image) : null;
+        if (! $this->gallery || empty($this->gallery)) {
+            return null;
+        }
+
+        $firstImage = is_array($this->gallery) ? ($this->gallery[0] ?? null) : null;
+
+        return $firstImage ? Storage::disk('public')->url($firstImage) : null;
     }
 
+    /**
+     * Get all gallery image URLs
+     */
     public function getGalleryUrlsAttribute(): array
     {
-        if (!$this->gallery) {
+        if (! $this->gallery || empty($this->gallery)) {
             return [];
         }
 
         return array_map(function ($image) {
-            return asset('storage/' . $image);
+            return Storage::disk('public')->url($image);
         }, $this->gallery);
+    }
+
+    /**
+     * Get gallery images excluding the first one (for product detail page)
+     */
+    public function getAdditionalImagesAttribute(): array
+    {
+        if (! $this->gallery || count($this->gallery) <= 1) {
+            return [];
+        }
+
+        return array_map(function ($image) {
+            return Storage::disk('public')->url($image);
+        }, array_slice($this->gallery, 1));
     }
 
     public function getLocalizedNameAttribute(): string
@@ -98,10 +121,5 @@ class Product extends Model
     public function getLocalizedDescriptionAttribute(): ?string
     {
         return app()->getLocale() === 'ar' && $this->description_ar ? $this->description_ar : $this->description;
-    }
-
-    public function getLocalizedShortDescriptionAttribute(): ?string
-    {
-        return app()->getLocale() === 'ar' && $this->short_description_ar ? $this->short_description_ar : $this->short_description;
     }
 }

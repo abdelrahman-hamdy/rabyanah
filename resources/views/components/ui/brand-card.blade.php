@@ -1,9 +1,10 @@
 @props(['brand'])
 
-<div class="group bg-gray-50 rounded-xl p-6 lg:p-8 flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer">
-    @if($brand->logo_url)
-    <img src="{{ $brand->logo_url }}"
-         alt="{{ $brand->localized_name }}"
+<a href="{{ route('brands.show', $brand) }}"
+   class="group bg-gray-50 rounded-xl p-6 lg:p-8 flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300">
+    @if($brand->image_url)
+    <img src="{{ $brand->image_url }}"
+         alt="{{ $brand->name }}"
          class="max-h-16 max-w-full object-contain grayscale group-hover:grayscale-0 transition-all duration-300">
     @else
     <div class="text-center">
@@ -13,8 +14,8 @@
             </span>
         </div>
         <span class="text-sm font-medium text-gray-600 group-hover:text-rabyanah-blue-600 transition-colors">
-            {{ $brand->localized_name }}
+            {{ $brand->name }}
         </span>
     </div>
     @endif
-</div>
+</a>

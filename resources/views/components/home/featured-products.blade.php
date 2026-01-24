@@ -37,12 +37,12 @@
 
         <!-- Featured Products Carousel -->
         @if($products->count() > 0)
-        <div class="relative -mx-4 lg:mx-0" data-animate="fade-up" data-delay="300">
-            <div class="swiper featured-swiper px-4 lg:px-0">
+        <div class="relative" data-animate="fade-up" data-delay="300">
+            <div class="swiper featured-swiper">
                 <div class="swiper-wrapper pt-4 pb-4">
                     @foreach($products as $index => $product)
                     <div class="swiper-slide">
-                        <div class="group bg-white rounded-3xl overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:shadow-[0_20px_50px_rgb(37,99,235,0.15)] transition-all duration-500 premium-card border border-gray-100/50">
+                        <a href="{{ route('products.show', $product->slug) }}" class="block group bg-white rounded-3xl overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:shadow-[0_20px_50px_rgb(37,99,235,0.15)] transition-all duration-500 border border-gray-100/50">
                             <!-- Product Image -->
                             <div class="relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-gray-100 to-gray-50">
                                 @if($product->image_url)
@@ -73,9 +73,15 @@
                                     </span>
                                     @endif
                                     @if($product->brand)
-                                    <span class="text-xs text-gray-500 font-medium">
-                                        {{ $product->brand->localized_name }}
-                                    </span>
+                                        @if($product->brand->image_url)
+                                        <img src="{{ $product->brand->image_url }}"
+                                             alt="{{ $product->brand->name }}"
+                                             class="h-6 w-auto object-contain">
+                                        @else
+                                        <span class="text-xs text-gray-500 font-medium">
+                                            {{ $product->brand->name }}
+                                        </span>
+                                        @endif
                                     @endif
                                 </div>
 
@@ -83,15 +89,8 @@
                                 <h3 class="text-lg font-bold text-gray-900 mb-2 group-hover:text-rabyanah-blue-600 transition-colors line-clamp-1">
                                     {{ $product->localized_name }}
                                 </h3>
-
-                                <!-- Short Description -->
-                                @if($product->localized_short_description)
-                                <p class="text-gray-500 text-sm leading-relaxed line-clamp-2">
-                                    {{ $product->localized_short_description }}
-                                </p>
-                                @endif
                             </div>
-                        </div>
+                        </a>
                     </div>
                     @endforeach
                 </div>
@@ -141,14 +140,13 @@
         </div>
         @endif
 
-        <!-- View All Link -->
-        <div class="text-center mt-16" data-animate="scale-up" data-delay="400">
+        <!-- See More Link -->
+        <div class="text-center mt-12" data-animate="fade-up" data-delay="400">
             <a href="#products"
-               class="group inline-flex items-center space-x-3 rtl:space-x-reverse px-8 py-4 rounded-full font-semibold border-2 border-gray-200 text-gray-600 hover:border-rabyanah-blue-600 hover:text-rabyanah-blue-600 hover:bg-rabyanah-blue-50 transition-all duration-300 hover:-translate-y-0.5"
-               data-magnetic="0.2">
-                <span>{{ __('Explore All Products') }}</span>
-                <svg class="w-5 h-5 rtl:rotate-180 animate-arrow-right" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+               class="inline-flex flex-col items-center text-rabyanah-blue-600 font-medium hover:text-rabyanah-blue-700 transition-colors">
+                <span>{{ __('See More') }}</span>
+                <svg class="w-5 h-5 mt-1 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
                 </svg>
             </a>
         </div>

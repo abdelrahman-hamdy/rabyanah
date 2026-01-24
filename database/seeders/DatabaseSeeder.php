@@ -13,15 +13,17 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // Create admin user if it doesn't exist
-        if (!User::where('email', 'admin@rabyanah.com')->exists()) {
+        if (! User::where('email', 'admin@rabyanah.com')->exists()) {
             User::factory()->create([
                 'name' => 'Admin',
                 'email' => 'admin@rabyanah.com',
             ]);
         }
 
-        // Run demo data seeder
+        // Run seeders
         $this->call([
+            SiteSettingsSeeder::class,
+            BrandSeeder::class,
             DemoDataSeeder::class,
         ]);
     }

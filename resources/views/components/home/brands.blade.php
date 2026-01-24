@@ -1,15 +1,4 @@
-@props(['brands' => []])
-
-@php
-    $brandImages = [
-        ['src' => 'images/brands/4star-brand-en.png', 'alt' => '4 Star Brand'],
-        ['src' => 'images/brands/5star-brand-en.jpeg', 'alt' => '5 Star Brand'],
-        ['src' => 'images/brands/al-oud-brand-en.png', 'alt' => 'Al Oud Brand'],
-        ['src' => 'images/brands/hamz-brand-en.png', 'alt' => 'Hamz Brand'],
-        ['src' => 'images/brands/hamz2-brand-en.png', 'alt' => 'Hamz 2 Brand'],
-        ['src' => 'images/brands/hamz-2star-brand-en.jpeg', 'alt' => 'Hamz 2 Star Brand'],
-    ];
-@endphp
+@props(['brands' => collect()])
 
 <section id="brands" class="py-24 lg:py-32 bg-white relative overflow-hidden">
     <!-- Decorative Background -->
@@ -38,6 +27,7 @@
         </div>
     </div>
 
+    @if($brands->count() > 0)
     <!-- Infinite Scrolling Brands Carousel -->
     <div class="mb-20 relative" data-animate="fade-up" data-delay="300">
         <!-- Gradient Fade Left -->
@@ -49,21 +39,21 @@
         <div class="brands-marquee overflow-visible py-4">
             <div class="brands-marquee-track flex items-center gap-12 lg:gap-16">
                 <!-- First set of brands -->
-                @foreach($brandImages as $brand)
+                @foreach($brands as $brand)
                 <div class="flex-shrink-0 group">
                     <div class="bg-white rounded-2xl p-6 lg:p-8 flex items-center justify-center w-48 h-32 lg:w-56 lg:h-36 transition-all duration-200 border border-gray-200 hover:shadow-xl">
-                        <img src="{{ asset($brand['src']) }}"
-                             alt="{{ $brand['alt'] }}"
+                        <img src="{{ $brand->image_url }}"
+                             alt="{{ $brand->name }}"
                              class="max-h-16 lg:max-h-20 max-w-full object-contain transition-transform duration-200 group-hover:scale-110">
                     </div>
                 </div>
                 @endforeach
                 <!-- Duplicate set for seamless loop -->
-                @foreach($brandImages as $brand)
+                @foreach($brands as $brand)
                 <div class="flex-shrink-0 group">
                     <div class="bg-white rounded-2xl p-6 lg:p-8 flex items-center justify-center w-48 h-32 lg:w-56 lg:h-36 transition-all duration-200 border border-gray-200 hover:shadow-xl">
-                        <img src="{{ asset($brand['src']) }}"
-                             alt="{{ $brand['alt'] }}"
+                        <img src="{{ $brand->image_url }}"
+                             alt="{{ $brand->name }}"
                              class="max-h-16 lg:max-h-20 max-w-full object-contain transition-transform duration-200 group-hover:scale-110">
                     </div>
                 </div>
@@ -71,6 +61,7 @@
             </div>
         </div>
     </div>
+    @endif
 
     <!-- Services Section -->
     <div class="container mx-auto px-4 lg:px-8 relative">

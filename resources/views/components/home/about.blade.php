@@ -1,3 +1,8 @@
+@php
+    $aboutYears = \App\Models\SiteSetting::get('about_years_experience', '40');
+    $aboutCertification = \App\Models\SiteSetting::get('about_certification', 'ISO 22000');
+@endphp
+
 <section id="about" class="py-24 lg:py-32 bg-white overflow-hidden">
     <div class="container mx-auto px-4 lg:px-8">
         <!-- Section Header -->
@@ -38,7 +43,7 @@
                     <div class="absolute -bottom-8 -right-8 lg:-right-12 z-20">
                         <div class="bg-white rounded-2xl shadow-xl p-6 border border-gray-100">
                             <div class="text-center">
-                                <div class="text-5xl font-bold text-rabyanah-blue-600 mb-1">40+</div>
+                                <div class="text-5xl font-bold text-rabyanah-blue-600 mb-1">{{ $aboutYears }}+</div>
                                 <div class="text-gray-600 font-medium text-sm">{{ __('Years of') }}<br>{{ __('Excellence') }}</div>
                             </div>
                         </div>
@@ -53,7 +58,7 @@
                                 </svg>
                             </div>
                             <div>
-                                <div class="font-bold">ISO 22000</div>
+                                <div class="font-bold">{{ $aboutCertification }}</div>
                                 <div class="text-white/80 text-sm">{{ __('Certified') }}</div>
                             </div>
                         </div>

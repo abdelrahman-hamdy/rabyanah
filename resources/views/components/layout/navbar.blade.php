@@ -1,9 +1,14 @@
+@php
+    $siteLogo = \App\Models\SiteSetting::get('site_logo');
+    $logoUrl = $siteLogo ? Storage::url($siteLogo) : asset('images/logo.svg');
+@endphp
+
 <header id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500">
     <nav class="container mx-auto px-4 lg:px-8">
         <div class="flex items-center justify-between h-24">
             <!-- Logo -->
             <a href="{{ route('home') }}" class="flex items-center group">
-                <img src="{{ asset('images/logo.svg') }}"
+                <img src="{{ $logoUrl }}"
                      alt="Rabyanah"
                      class="h-14 w-auto transition-all duration-300 nav-logo">
             </a>
@@ -14,16 +19,16 @@
                     <a href="#home" class="nav-link px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300">
                         {{ __('Home') }}
                     </a>
-                    <a href="#products" class="nav-link px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300">
+                    <a href="{{ route('products.index') }}" class="nav-link px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300">
                         {{ __('Products') }}
                     </a>
-                    <a href="#brands" class="nav-link px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300">
+                    <a href="{{ route('brands.index') }}" class="nav-link px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300">
                         {{ __('Brands') }}
                     </a>
-                    <a href="#about" class="nav-link px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300">
+                    <a href="{{ route('about') }}" class="nav-link px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300">
                         {{ __('About') }}
                     </a>
-                    <a href="#contact" class="nav-link px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300">
+                    <a href="{{ route('contact') }}" class="nav-link px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300">
                         {{ __('Contact') }}
                     </a>
                 </div>
@@ -31,6 +36,15 @@
 
             <!-- Right Side Actions -->
             <div class="hidden lg:flex items-center space-x-4 rtl:space-x-reverse">
+                <!-- Search Button -->
+                <a href="{{ route('search') }}"
+                   class="nav-link flex items-center justify-center w-10 h-10 rounded-full transition-all duration-300 hover:bg-white/10"
+                   title="{{ __('Search') }}">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
+                </a>
+
                 <!-- Language Switcher -->
                 <a href="{{ route('locale.switch', app()->getLocale() === 'ar' ? 'en' : 'ar') }}"
                    class="nav-link flex items-center space-x-2 rtl:space-x-reverse px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 border border-white/20 hover:border-white/40">
@@ -41,7 +55,7 @@
                 </a>
 
                 <!-- CTA Button -->
-                <a href="#contact" class="nav-cta group relative overflow-hidden px-7 py-3 rounded-full font-semibold text-sm transition-all duration-300">
+                <a href="{{ route('contact') }}" class="nav-cta group relative overflow-hidden px-7 py-3 rounded-full font-semibold text-sm transition-all duration-300">
                     <span class="relative z-10">{{ __('Get in Touch') }}</span>
                     <div class="absolute inset-0 bg-gradient-to-r from-rabyanah-red-600 to-rabyanah-red-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 </a>
@@ -61,20 +75,33 @@
         <!-- Mobile Menu -->
         <div id="mobile-menu" class="hidden lg:hidden">
             <div class="bg-white/95 backdrop-blur-xl rounded-3xl mx-4 mb-6 p-6 shadow-2xl border border-gray-100">
+                <!-- Mobile Search -->
+                <form action="{{ route('search') }}" method="GET" class="mb-4">
+                    <div class="relative">
+                        <input type="text"
+                               name="q"
+                               placeholder="{{ __('Search products...') }}"
+                               class="w-full pl-10 rtl:pl-4 rtl:pr-10 pr-4 py-3 bg-gray-100 rounded-xl border-0 focus:ring-2 focus:ring-rabyanah-blue-500">
+                        <svg class="absolute left-3 rtl:left-auto rtl:right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                        </svg>
+                    </div>
+                </form>
+
                 <div class="flex flex-col space-y-2">
                     <a href="#home" class="font-medium text-gray-800 hover:text-rabyanah-blue-600 hover:bg-rabyanah-blue-50 px-4 py-3 rounded-xl transition-all duration-300">
                         {{ __('Home') }}
                     </a>
-                    <a href="#products" class="font-medium text-gray-800 hover:text-rabyanah-blue-600 hover:bg-rabyanah-blue-50 px-4 py-3 rounded-xl transition-all duration-300">
+                    <a href="{{ route('products.index') }}" class="font-medium text-gray-800 hover:text-rabyanah-blue-600 hover:bg-rabyanah-blue-50 px-4 py-3 rounded-xl transition-all duration-300">
                         {{ __('Products') }}
                     </a>
-                    <a href="#brands" class="font-medium text-gray-800 hover:text-rabyanah-blue-600 hover:bg-rabyanah-blue-50 px-4 py-3 rounded-xl transition-all duration-300">
+                    <a href="{{ route('brands.index') }}" class="font-medium text-gray-800 hover:text-rabyanah-blue-600 hover:bg-rabyanah-blue-50 px-4 py-3 rounded-xl transition-all duration-300">
                         {{ __('Brands') }}
                     </a>
-                    <a href="#about" class="font-medium text-gray-800 hover:text-rabyanah-blue-600 hover:bg-rabyanah-blue-50 px-4 py-3 rounded-xl transition-all duration-300">
+                    <a href="{{ route('about') }}" class="font-medium text-gray-800 hover:text-rabyanah-blue-600 hover:bg-rabyanah-blue-50 px-4 py-3 rounded-xl transition-all duration-300">
                         {{ __('About') }}
                     </a>
-                    <a href="#contact" class="font-medium text-gray-800 hover:text-rabyanah-blue-600 hover:bg-rabyanah-blue-50 px-4 py-3 rounded-xl transition-all duration-300">
+                    <a href="{{ route('contact') }}" class="font-medium text-gray-800 hover:text-rabyanah-blue-600 hover:bg-rabyanah-blue-50 px-4 py-3 rounded-xl transition-all duration-300">
                         {{ __('Contact') }}
                     </a>
                 </div>
@@ -83,7 +110,7 @@
                        class="text-gray-600 hover:text-rabyanah-blue-600 font-medium transition-colors">
                         {{ app()->getLocale() === 'ar' ? 'English' : 'العربية' }}
                     </a>
-                    <a href="#contact"
+                    <a href="{{ route('contact') }}"
                        class="bg-rabyanah-red-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-rabyanah-red-700 transition-all duration-300">
                         {{ __('Get in Touch') }}
                     </a>

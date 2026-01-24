@@ -5,13 +5,13 @@ namespace App\Filament\Resources\Products\Schemas;
 use App\Models\Brand;
 use App\Models\Category;
 use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Tabs;
-use Filament\Forms\Components\Tabs\Tab;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Str;
 
@@ -29,9 +29,6 @@ class ProductForm
                                     ->required()
                                     ->live(onBlur: true)
                                     ->afterStateUpdated(fn ($state, callable $set) => $set('slug', Str::slug($state))),
-                                TextInput::make('short_description')
-                                    ->label('Short Description')
-                                    ->maxLength(255),
                                 Textarea::make('description')
                                     ->rows(4),
                             ]),
@@ -39,9 +36,6 @@ class ProductForm
                             ->schema([
                                 TextInput::make('name_ar')
                                     ->label('Name (Arabic)'),
-                                TextInput::make('short_description_ar')
-                                    ->label('Short Description (Arabic)')
-                                    ->maxLength(255),
                                 Textarea::make('description_ar')
                                     ->label('Description (Arabic)')
                                     ->rows(4),
@@ -68,30 +62,29 @@ class ProductForm
                     ->columns(3),
 
                 Section::make('Images')
+                    ->description('Drag to reorder. The first image will be used as the main product image.')
                     ->schema([
-                        FileUpload::make('image')
-                            ->label('Main Image')
-                            ->image()
-                            ->directory('products')
-                            ->imageEditor()
-                            ->maxSize(2048),
                         FileUpload::make('gallery')
-                            ->label('Gallery Images')
+                            ->label('Product Images')
                             ->image()
                             ->multiple()
-                            ->directory('products/gallery')
+                            ->disk('public')
+                            ->directory('products')
+                            ->visibility('public')
                             ->imageEditor()
+                            ->imageResizeMode('cover')
+                            ->imageCropAspectRatio('4:3')
+                            ->imageResizeTargetWidth('800')
+                            ->imageResizeTargetHeight('600')
                             ->maxSize(2048)
                             ->maxFiles(10)
-                            ->reorderable(),
-                    ])
-                    ->columns(2),
+                            ->reorderable()
+                            ->panelLayout('grid')
+                            ->columnSpanFull(),
+                    ]),
 
                 Section::make('Settings')
                     ->schema([
-                        TextInput::make('sort_order')
-                            ->numeric()
-                            ->default(0),
                         Toggle::make('is_featured')
                             ->label('Featured')
                             ->default(false),
@@ -99,7 +92,7 @@ class ProductForm
                             ->label('Active')
                             ->default(true),
                     ])
-                    ->columns(3),
+                    ->columns(2),
             ]);
     }
 }

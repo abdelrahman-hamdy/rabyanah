@@ -1,6 +1,6 @@
 <x-layout.app :title="__('Rabyanah - Global Food Trade Company')">
     {{-- Hero Section --}}
-    <x-home.hero :slides="$heroSlides" />
+    <x-home.hero />
 
     {{-- Featured Products Section --}}
     <x-home.featured-products :products="$featuredProducts" />

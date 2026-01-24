@@ -3,12 +3,12 @@
 namespace App\Filament\Resources\Categories\Schemas;
 
 use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Components\Tabs;
-use Filament\Forms\Components\Tabs\Tab;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Str;
 
@@ -40,29 +40,30 @@ class CategoryForm
                     ])
                     ->columnSpanFull(),
 
-                Section::make('Details')
+                Section::make('Settings')
                     ->schema([
                         TextInput::make('slug')
                             ->required()
                             ->unique(ignoreRecord: true),
-                        FileUpload::make('image')
-                            ->image()
-                            ->directory('categories')
-                            ->imageEditor()
-                            ->maxSize(2048),
-                    ])
-                    ->columns(2),
-
-                Section::make('Settings')
-                    ->schema([
                         TextInput::make('sort_order')
                             ->numeric()
                             ->default(0),
+                        FileUpload::make('image')
+                            ->image()
+                            ->disk('public')
+                            ->directory('categories')
+                            ->visibility('public')
+                            ->imageEditor()
+                            ->imageResizeMode('cover')
+                            ->imageCropAspectRatio('1:1')
+                            ->imageResizeTargetWidth('400')
+                            ->imageResizeTargetHeight('400')
+                            ->maxSize(2048),
                         Toggle::make('is_active')
                             ->label('Active')
                             ->default(true),
                     ])
-                    ->columns(2),
+                    ->columnSpanFull(),
             ]);
     }
 }

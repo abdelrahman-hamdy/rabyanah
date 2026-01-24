@@ -1,7 +1,13 @@
 @props(['title' => 'Rabyanah - Global Food Trade'])
 
+@php
+    $siteFavicon = \App\Models\SiteSetting::get('site_favicon');
+    $faviconUrl = $siteFavicon ? Storage::url($siteFavicon) : asset('favicon.svg');
+    $faviconType = $siteFavicon ? 'image/png' : 'image/svg+xml';
+@endphp
+
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}" class="overscroll-none">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,7 +17,7 @@
     <title>{{ $title }}</title>
 
     <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
+    <link rel="icon" type="{{ $faviconType }}" href="{{ $faviconUrl }}">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -24,7 +30,7 @@
     <!-- Alpine.js -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
-<body class="font-sans antialiased bg-white text-gray-900">
+<body class="font-sans antialiased bg-white text-gray-900 overscroll-none">
     <!-- Navbar -->
     <x-layout.navbar />
 
@@ -35,5 +41,7 @@
 
     <!-- Footer -->
     <x-layout.footer />
+
+    @stack('scripts')
 </body>
 </html>

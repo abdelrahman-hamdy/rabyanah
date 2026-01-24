@@ -2,11 +2,17 @@ import './bootstrap';
 
 // Import Swiper and modules
 import Swiper from 'swiper';
-import { Navigation, Pagination, Autoplay, EffectFade } from 'swiper/modules';
+import { Navigation, Pagination, Autoplay, EffectFade, Thumbs, Zoom } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/effect-fade';
+import 'swiper/css/thumbs';
+import 'swiper/css/zoom';
+
+// Import GLightbox
+import GLightbox from 'glightbox';
+import 'glightbox/dist/css/glightbox.min.css';
 
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', function () {
@@ -104,6 +110,65 @@ document.addEventListener('DOMContentLoaded', function () {
                 768: { slidesPerView: 5 },
                 1024: { slidesPerView: 6 },
             },
+        });
+    }
+
+    // ============================================
+    // PRODUCT GALLERY WITH THUMBS & LIGHTBOX
+    // ============================================
+    const productGalleryThumbs = document.querySelector('.product-gallery-thumbs');
+    const productGalleryMain = document.querySelector('.product-gallery-main');
+
+    if (productGalleryThumbs && productGalleryMain) {
+        // Initialize thumbnails swiper first
+        const thumbsSwiper = new Swiper('.product-gallery-thumbs', {
+            modules: [Navigation],
+            spaceBetween: 12,
+            slidesPerView: 4,
+            watchSlidesProgress: true,
+            breakpoints: {
+                640: { slidesPerView: 5 },
+            },
+        });
+
+        // Initialize main gallery swiper
+        const mainSwiper = new Swiper('.product-gallery-main', {
+            modules: [Navigation, Thumbs, Zoom],
+            spaceBetween: 10,
+            navigation: {
+                nextEl: '.product-gallery-next',
+                prevEl: '.product-gallery-prev',
+            },
+            thumbs: {
+                swiper: thumbsSwiper,
+            },
+            zoom: {
+                maxRatio: 2,
+            },
+        });
+
+        // Initialize GLightbox for product images
+        const lightbox = GLightbox({
+            selector: '.product-lightbox-trigger',
+            touchNavigation: true,
+            loop: true,
+            autoplayVideos: false,
+            openEffect: 'zoom',
+            closeEffect: 'fade',
+            cssEf498: {
+                fadeIn: 'animate__fadeIn',
+                fadeOut: 'animate__fadeOut'
+            }
+        });
+    }
+
+    // Initialize GLightbox for any other galleries on the page
+    const otherGalleries = document.querySelectorAll('[data-gallery]');
+    if (otherGalleries.length > 0) {
+        GLightbox({
+            selector: '[data-gallery]',
+            touchNavigation: true,
+            loop: true,
         });
     }
 

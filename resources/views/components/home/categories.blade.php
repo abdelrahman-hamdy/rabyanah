@@ -1,51 +1,4 @@
-@props(['categories' => []])
-
-@php
-    $categoryData = [
-        [
-            'name' => 'Dairy Products',
-            'slug' => 'dairy',
-            'image' => 'images/dummy/product1.png',
-            'description' => 'Fresh milk, cheese, butter & yogurt',
-            'count' => 24,
-        ],
-        [
-            'name' => 'Grains & Cereals',
-            'slug' => 'grains',
-            'image' => 'images/dummy/product2.png',
-            'description' => 'Rice, pasta, flour & oats',
-            'count' => 18,
-        ],
-        [
-            'name' => 'Cooking Oils',
-            'slug' => 'oils',
-            'image' => 'images/dummy/product3.png',
-            'description' => 'Olive, sunflower & vegetable oils',
-            'count' => 12,
-        ],
-        [
-            'name' => 'Canned Foods',
-            'slug' => 'canned',
-            'image' => 'images/dummy/product4.png',
-            'description' => 'Vegetables, fruits & sauces',
-            'count' => 32,
-        ],
-        [
-            'name' => 'Beverages',
-            'slug' => 'beverages',
-            'image' => 'images/dummy/product5.png',
-            'description' => 'Juices, tea, coffee & drinks',
-            'count' => 28,
-        ],
-        [
-            'name' => 'Natural Products',
-            'slug' => 'natural',
-            'image' => 'images/dummy/product6.png',
-            'description' => 'Honey, nuts & organic items',
-            'count' => 15,
-        ],
-    ];
-@endphp
+@props(['categories' => collect()])
 
 <section id="categories" class="py-24 lg:py-32 bg-white relative overflow-hidden">
     <!-- Decorative Background -->
@@ -73,38 +26,50 @@
             </p>
         </div>
 
+        @if($categories->count() > 0)
         <!-- Categories Grid -->
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 lg:gap-6" data-animate-children>
-            @foreach($categoryData as $index => $category)
-            <a href="#products" class="group relative block">
+            @foreach($categories as $category)
+            <a href="{{ route('categories.show', $category->slug) }}" class="group relative block">
                 <!-- Card Container -->
                 <div class="relative aspect-[3/4] rounded-2xl overflow-hidden bg-gradient-to-br from-gray-100 to-gray-50 shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:shadow-[0_20px_50px_rgb(37,99,235,0.2)] transition-all duration-500">
                     <!-- Background Image -->
-                    <img src="{{ asset($category['image']) }}"
-                         alt="{{ __($category['name']) }}"
+                    @if($category->image_url)
+                    <img src="{{ $category->image_url }}"
+                         alt="{{ $category->localized_name }}"
                          class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                    @else
+                    <div class="absolute inset-0 bg-gradient-to-br from-rabyanah-blue-100 to-rabyanah-blue-200 flex items-center justify-center">
+                        <svg class="w-16 h-16 text-rabyanah-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+                        </svg>
+                    </div>
+                    @endif
 
                     <!-- Gradient Overlay -->
                     <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300"></div>
 
+                    <!-- Product Count Badge - Fixed at top right -->
+                    <div class="absolute top-3 right-3 rtl:right-auto rtl:left-3 z-10">
+                        <span class="inline-flex items-center justify-center min-w-[2rem] h-8 px-2 bg-white/95 backdrop-blur-sm text-xs font-bold text-rabyanah-blue-600 rounded-full shadow-sm">
+                            {{ $category->products_count ?? $category->products()->active()->count() }}
+                        </span>
+                    </div>
+
                     <!-- Content -->
-                    <div class="absolute inset-0 flex flex-col justify-end p-4 lg:p-5">
-                        <!-- Product Count Badge -->
-                        <div class="absolute top-3 right-3 rtl:right-auto rtl:left-3">
-                            <span class="inline-flex items-center justify-center min-w-[2rem] h-8 px-2 bg-white/95 backdrop-blur-sm text-xs font-bold text-rabyanah-blue-600 rounded-full shadow-sm">
-                                {{ $category['count'] }}
-                            </span>
+                    <div class="absolute inset-x-0 bottom-0 p-4 lg:p-5">
+                        <!-- Text Content - Animates up on hover -->
+                        <div class="transform group-hover:-translate-y-2 transition-transform duration-300">
+                            <!-- Category Name -->
+                            <h3 class="text-white font-bold text-base lg:text-lg leading-tight group-hover:text-rabyanah-blue-300 transition-colors duration-300">
+                                {{ $category->localized_name }}
+                            </h3>
+
+                            <!-- Description - Hidden on mobile, appears on hover -->
+                            <p class="hidden md:block text-white/70 text-xs leading-relaxed line-clamp-2 h-0 overflow-hidden opacity-0 group-hover:h-auto group-hover:mt-1 group-hover:opacity-100 transition-all duration-300">
+                                {{ $category->localized_description ?? __('Explore our products') }}
+                            </p>
                         </div>
-
-                        <!-- Category Name -->
-                        <h3 class="text-white font-bold text-base lg:text-lg leading-tight mb-1 group-hover:text-rabyanah-blue-300 transition-colors duration-300">
-                            {{ __($category['name']) }}
-                        </h3>
-
-                        <!-- Description - Hidden on mobile -->
-                        <p class="hidden md:block text-white/70 text-xs leading-relaxed line-clamp-2 transform translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
-                            {{ __($category['description']) }}
-                        </p>
 
                         <!-- Arrow Icon -->
                         <div class="absolute bottom-4 right-4 rtl:right-auto rtl:left-4 w-8 h-8 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center transform translate-x-2 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300">
@@ -120,12 +85,21 @@
 
         <!-- View All Categories Link -->
         <div class="text-center mt-12" data-animate="scale-up" data-delay="400">
-            <a href="#products" class="inline-flex items-center gap-2 text-rabyanah-blue-600 hover:text-rabyanah-blue-700 font-semibold transition-all duration-300 group hover:-translate-y-0.5">
-                <span>{{ __('View All Categories') }}</span>
+            <a href="{{ route('products.index') }}" class="inline-flex items-center gap-2 text-rabyanah-blue-600 hover:text-rabyanah-blue-700 font-semibold transition-all duration-300 group hover:-translate-y-0.5">
+                <span>{{ __('View All Products') }}</span>
                 <svg class="w-5 h-5 transform group-hover:translate-x-1 rtl:group-hover:-translate-x-1 rtl:rotate-180 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
                 </svg>
             </a>
         </div>
+        @else
+        <!-- Empty State -->
+        <div class="text-center py-12">
+            <svg class="w-16 h-16 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+            </svg>
+            <p class="text-gray-500">{{ __('No categories available yet.') }}</p>
+        </div>
+        @endif
     </div>
 </section>
