@@ -12,8 +12,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // First truncate the table to remove existing data
+        // Disable foreign key checks and truncate the table
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         DB::table('brands')->truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
         // For SQLite, we need to recreate the table
         if (DB::connection()->getDriverName() === 'sqlite') {
