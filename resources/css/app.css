@@ -60,12 +60,20 @@
 }
 
 #navbar .nav-logo {
-    @apply brightness-100 invert-0;
+    @apply brightness-100 invert-0 h-16 transition-all duration-500;
+}
+
+#navbar .navbar-inner {
+    @apply h-28 transition-all duration-500;
 }
 
 /* Scrolled state - Solid white */
 #navbar.scrolled {
     @apply bg-white/95 backdrop-blur-xl shadow-lg shadow-black/5;
+}
+
+#navbar.scrolled .navbar-inner {
+    @apply h-20;
 }
 
 #navbar.scrolled .nav-link {
@@ -81,7 +89,7 @@
 }
 
 #navbar.scrolled .nav-logo {
-    @apply brightness-100 invert-0;
+    @apply brightness-100 invert-0 h-12;
 }
 
 /* ============================================

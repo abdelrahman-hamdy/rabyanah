@@ -5,12 +5,12 @@
 
 <header id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500">
     <nav class="container mx-auto px-4 lg:px-8">
-        <div class="flex items-center justify-between h-24">
+        <div class="navbar-inner flex items-center justify-between h-28 transition-all duration-500">
             <!-- Logo -->
             <a href="{{ route('home') }}" class="flex items-center group">
                 <img src="{{ $logoUrl }}"
                      alt="Rabyanah"
-                     class="h-14 w-auto transition-all duration-300 nav-logo">
+                     class="w-auto nav-logo">
             </a>
 
             <!-- Desktop Navigation -->

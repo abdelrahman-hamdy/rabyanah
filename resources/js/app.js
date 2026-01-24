@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (navbar) {
         // Initial check for scroll position
         const updateNavbar = () => {
-            if (window.scrollY > 100) {
+            if (window.scrollY > 50) {
                 navbar.classList.add('scrolled');
             } else {
                 navbar.classList.remove('scrolled');
