@@ -133,7 +133,7 @@
 
                     <!-- Center Product - Cookies (Main Focal) - Front -->
                     <div class="hero-product hero-product-center absolute left-[50%] w-[42%] z-30"
-                         style="transform: translateX(-50%); top: 50%;">
+                         style="transform: translateX(-50%); top: 35%;">
                         <img src="{{ asset('images/hero/danis-cookies.png') }}"
                              alt="Danis Cookies"
                              class="w-full h-auto drop-shadow-2xl">
