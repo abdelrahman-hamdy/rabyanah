@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -12,7 +11,7 @@ class ProductController extends Controller
 {
     public function index(Request $request): View
     {
-        $query = Product::with(['category', 'brand'])
+        $query = Product::with(['category'])
             ->active()
             ->ordered();
 
@@ -31,11 +30,6 @@ class ProductController extends Controller
             $query->whereHas('category', fn ($q) => $q->where('slug', $categorySlug));
         }
 
-        // Filter by brand
-        if ($brandId = $request->get('brand')) {
-            $query->where('brand_id', $brandId);
-        }
-
         $products = $query->paginate(12)->withQueryString();
 
         $categories = Category::active()
@@ -43,25 +37,20 @@ class ProductController extends Controller
             ->withCount(['products' => fn ($q) => $q->active()])
             ->get();
 
-        $brands = Brand::active()
-            ->orderBy('name')
-            ->get();
-
         return view('pages.products.index', [
             'products' => $products,
             'categories' => $categories,
-            'brands' => $brands,
         ]);
     }
 
     public function show(string $slug): View
     {
-        $product = Product::with(['category', 'brand'])
+        $product = Product::with(['category'])
             ->where('slug', $slug)
             ->where('is_active', true)
             ->firstOrFail();
 
-        $relatedProducts = Product::with(['category', 'brand'])
+        $relatedProducts = Product::with(['category'])
             ->where('category_id', $product->category_id)
             ->where('id', '!=', $product->id)
             ->active()

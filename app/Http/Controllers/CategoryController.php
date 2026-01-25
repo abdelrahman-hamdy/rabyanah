@@ -15,7 +15,6 @@ class CategoryController extends Controller
             ->firstOrFail();
 
         $query = $category->products()
-            ->with('brand')
             ->active()
             ->ordered();
 
@@ -29,27 +28,11 @@ class CategoryController extends Controller
             });
         }
 
-        // Filter by brand
-        if ($brandId = $request->get('brand')) {
-            $query->where('brand_id', $brandId);
-        }
-
         $products = $query->paginate(12)->withQueryString();
-
-        // Get brands in this category for filter
-        $brands = $category->products()
-            ->active()
-            ->with('brand')
-            ->get()
-            ->pluck('brand')
-            ->filter()
-            ->unique('id')
-            ->sortBy('name');
 
         return view('pages.categories.show', [
             'category' => $category,
             'products' => $products,
-            'brands' => $brands,
         ]);
     }
 }

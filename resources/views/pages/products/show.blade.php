@@ -113,21 +113,12 @@
 
                 <!-- Product Info -->
                 <div>
-                    <!-- Category & Brand -->
+                    <!-- Category & Featured Badge -->
                     <div class="flex flex-wrap items-center gap-3 mb-6">
                         @if($product->category)
                         <a href="{{ route('categories.show', $product->category->slug) }}"
                            class="inline-flex items-center px-4 py-1.5 bg-rabyanah-blue-100 text-rabyanah-blue-700 rounded-full text-sm font-medium hover:bg-rabyanah-blue-200 transition-colors">
                             {{ $product->category->localized_name }}
-                        </a>
-                        @endif
-                        @if($product->brand)
-                        <a href="{{ route('brands.show', $product->brand) }}"
-                           class="inline-flex items-center px-4 py-1.5 bg-gray-100 text-gray-700 rounded-full text-sm font-medium hover:bg-gray-200 transition-colors">
-                            @if($product->brand->image_url)
-                            <img src="{{ $product->brand->image_url }}" alt="" class="w-4 h-4 object-contain mr-2 rtl:mr-0 rtl:ml-2">
-                            @endif
-                            {{ $product->brand->name }}
                         </a>
                         @endif
                         @if($product->is_featured)
@@ -149,26 +140,6 @@
                         <div class="prose prose-gray max-w-none text-gray-600 leading-relaxed">
                             {!! nl2br(e($product->localized_description)) !!}
                         </div>
-                    </div>
-                    @endif
-
-                    <!-- Brand Info -->
-                    @if($product->brand && $product->brand->description)
-                    <div class="bg-gray-50 rounded-2xl p-6 mb-10">
-                        <div class="flex items-center gap-4 mb-4">
-                            @if($product->brand->image_url)
-                            <div class="w-14 h-14 bg-white rounded-xl p-2 shadow-sm">
-                                <img src="{{ $product->brand->image_url }}"
-                                     alt="{{ $product->brand->name }}"
-                                     class="w-full h-full object-contain">
-                            </div>
-                            @endif
-                            <div>
-                                <h3 class="font-semibold text-gray-900">{{ $product->brand->name }}</h3>
-                                <span class="text-sm text-gray-500">{{ __('Brand') }}</span>
-                            </div>
-                        </div>
-                        <p class="text-gray-600 text-sm leading-relaxed">{{ $product->brand->description }}</p>
                     </div>
                     @endif
 

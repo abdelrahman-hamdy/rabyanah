@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\AboutController;
-use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeController;
@@ -28,10 +27,6 @@ Route::get('/products/{slug}', [ProductController::class, 'show'])->name('produc
 
 // Categories
 Route::get('/categories/{slug}', [CategoryController::class, 'show'])->name('categories.show');
-
-// Brands
-Route::get('/brands', [BrandController::class, 'index'])->name('brands.index');
-Route::get('/brands/{brand}', [BrandController::class, 'show'])->name('brands.show');
 
 // Search
 Route::get('/search', [SearchController::class, 'index'])->name('search');

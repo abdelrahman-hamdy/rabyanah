@@ -16,7 +16,7 @@ class HomeController extends Controller
     {
         $featuredProducts = Product::active()
             ->featured()
-            ->with(['category', 'brand'])
+            ->with(['category'])
             ->ordered()
             ->take(9)
             ->get();
@@ -29,7 +29,7 @@ class HomeController extends Controller
         // Default: 8 recent products EXCLUDING featured
         $products = Product::active()
             ->where('is_featured', false)
-            ->with(['category', 'brand'])
+            ->with(['category'])
             ->latest()
             ->take(8)
             ->get();
@@ -53,7 +53,7 @@ class HomeController extends Controller
 
         $products = Cache::remember($cacheKey, 300, function () use ($categorySlug) {
             $query = Product::active()
-                ->with(['category:id,name,name_ar,slug', 'brand:id,name,image'])
+                ->with(['category:id,name,name_ar,slug'])
                 ->latest()
                 ->take(8);
 

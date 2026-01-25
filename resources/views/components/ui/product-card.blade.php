@@ -1,7 +1,6 @@
 @props([
     'product',
     'showCategory' => true,
-    'showBrand' => true,
 ])
 
 <a href="{{ route('products.show', $product->slug) }}" class="block h-full">
@@ -39,27 +38,12 @@
 
         <!-- Product Info -->
         <div class="p-6 flex flex-col flex-1">
-            <!-- Category & Brand -->
-            @if(($showCategory && $product->category) || ($showBrand && $product->brand))
-            <div class="flex items-center justify-between mb-3">
-                @if($showCategory && $product->category)
+            <!-- Category -->
+            @if($showCategory && $product->category)
+            <div class="mb-3">
                 <span class="text-xs font-semibold text-rabyanah-blue-600 bg-rabyanah-blue-50 px-3 py-1 rounded-full">
                     {{ $product->category->localized_name }}
                 </span>
-                @else
-                <span></span>
-                @endif
-                @if($showBrand && $product->brand)
-                    @if($product->brand->image_url)
-                    <img src="{{ $product->brand->image_url }}"
-                         alt="{{ $product->brand->name }}"
-                         class="h-6 w-auto object-contain">
-                    @else
-                    <span class="text-xs text-gray-500 font-medium">
-                        {{ $product->brand->name }}
-                    </span>
-                    @endif
-                @endif
             </div>
             @endif
 

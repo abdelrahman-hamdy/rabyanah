@@ -16,7 +16,6 @@ class Product extends Model
         'description',
         'description_ar',
         'gallery',
-        'brand_id',
         'category_id',
         'is_featured',
         'is_active',
@@ -37,11 +36,6 @@ class Product extends Model
                 $product->slug = Str::slug($product->name);
             }
         });
-    }
-
-    public function brand(): BelongsTo
-    {
-        return $this->belongsTo(Brand::class);
     }
 
     public function category(): BelongsTo

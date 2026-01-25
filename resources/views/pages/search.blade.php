@@ -65,30 +65,8 @@
                             </div>
                             @endif
 
-                            <!-- Brands -->
-                            @if($brands->count() > 0)
-                            <div class="mb-6">
-                                <h4 class="text-sm font-medium text-gray-700 mb-3">{{ __('Brands') }}</h4>
-                                <div class="space-y-2.5 max-h-48 overflow-y-auto pr-2">
-                                    @foreach($brands as $brand)
-                                    <label class="flex items-center cursor-pointer group">
-                                        <input type="radio"
-                                               name="brand"
-                                               value="{{ $brand->id }}"
-                                               {{ request('brand') == $brand->id ? 'checked' : '' }}
-                                               onchange="document.getElementById('filterForm').submit()"
-                                               class="w-4 h-4 text-rabyanah-blue-600 border-gray-300 focus:ring-rabyanah-blue-500">
-                                        <span class="ml-3 rtl:ml-0 rtl:mr-3 text-sm text-gray-600 group-hover:text-gray-900 transition-colors">
-                                            {{ $brand->name }}
-                                        </span>
-                                    </label>
-                                    @endforeach
-                                </div>
-                            </div>
-                            @endif
-
                             <!-- Clear Filters -->
-                            @if(request('category') || request('brand'))
+                            @if(request('category'))
                             <a href="{{ route('search', ['q' => $query]) }}"
                                class="block w-full text-center px-4 py-3 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 transition-all duration-200 text-sm font-medium">
                                 {{ __('Clear Filters') }}
@@ -132,7 +110,7 @@
                             {{ __('Try searching for a product') }}
                             @endif
                         </p>
-                        @if($query || request('category') || request('brand'))
+                        @if($query || request('category'))
                         <a href="{{ route('search') }}"
                            class="inline-flex items-center px-6 py-3 bg-rabyanah-blue-600 text-white font-medium rounded-xl hover:bg-rabyanah-blue-700 transition-all duration-200 shadow-sm hover:shadow-md">
                             <svg class="w-5 h-5 mr-2 rtl:mr-0 rtl:ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">

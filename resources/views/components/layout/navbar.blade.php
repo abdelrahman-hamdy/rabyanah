@@ -22,9 +22,6 @@
                     <a href="{{ route('products.index') }}" class="nav-link px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300">
                         {{ __('Products') }}
                     </a>
-                    <a href="{{ route('brands.index') }}" class="nav-link px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300">
-                        {{ __('Brands') }}
-                    </a>
                     <a href="{{ route('about') }}" class="nav-link px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300">
                         {{ __('About') }}
                     </a>
@@ -94,9 +91,6 @@
                     </a>
                     <a href="{{ route('products.index') }}" class="font-medium text-gray-800 hover:text-rabyanah-blue-600 hover:bg-rabyanah-blue-50 px-4 py-3 rounded-xl transition-all duration-300">
                         {{ __('Products') }}
-                    </a>
-                    <a href="{{ route('brands.index') }}" class="font-medium text-gray-800 hover:text-rabyanah-blue-600 hover:bg-rabyanah-blue-50 px-4 py-3 rounded-xl transition-all duration-300">
-                        {{ __('Brands') }}
                     </a>
                     <a href="{{ route('about') }}" class="font-medium text-gray-800 hover:text-rabyanah-blue-600 hover:bg-rabyanah-blue-50 px-4 py-3 rounded-xl transition-all duration-300">
                         {{ __('About') }}

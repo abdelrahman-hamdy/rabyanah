@@ -38,9 +38,6 @@ class ProductsTable
                     ->sortable()
                     ->badge()
                     ->color('primary'),
-                TextColumn::make('brand.name')
-                    ->label('Brand')
-                    ->sortable(),
                 IconColumn::make('is_featured')
                     ->boolean()
                     ->label('Featured'),
@@ -55,9 +52,6 @@ class ProductsTable
             ->filters([
                 SelectFilter::make('category')
                     ->relationship('category', 'name')
-                    ->preload(),
-                SelectFilter::make('brand')
-                    ->relationship('brand', 'name')
                     ->preload(),
                 TernaryFilter::make('is_featured')
                     ->label('Featured'),

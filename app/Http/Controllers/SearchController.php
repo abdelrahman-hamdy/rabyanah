@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -14,9 +13,8 @@ class SearchController extends Controller
     {
         $query = $request->get('q', '');
         $categorySlug = $request->get('category');
-        $brandId = $request->get('brand');
 
-        $productsQuery = Product::with(['category', 'brand'])
+        $productsQuery = Product::with(['category'])
             ->active()
             ->ordered();
 
@@ -35,21 +33,14 @@ class SearchController extends Controller
             });
         }
 
-        // Filter by brand
-        if ($brandId) {
-            $productsQuery->where('brand_id', $brandId);
-        }
-
         $products = $productsQuery->paginate(12)->withQueryString();
 
-        // Get all categories and brands for filters
+        // Get all categories for filters
         $categories = Category::active()->ordered()->get();
-        $brands = Brand::active()->orderBy('name')->get();
 
         return view('pages.search', [
             'products' => $products,
             'categories' => $categories,
-            'brands' => $brands,
             'query' => $query,
         ]);
     }

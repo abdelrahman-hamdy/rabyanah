@@ -36,22 +36,6 @@
                         </svg>
                     </div>
 
-                    <!-- Brand Filter -->
-                    @if($brands->count() > 0)
-                    <div class="flex-1 min-w-0">
-                        <select name="brand"
-                                onchange="this.form.submit()"
-                                class="w-full h-12 pl-4 pr-10 bg-white border border-gray-200 rounded-xl text-gray-700 focus:ring-2 focus:ring-rabyanah-blue-500/20 focus:border-rabyanah-blue-500 transition-all duration-200 cursor-pointer">
-                            <option value="">{{ __('All Brands') }}</option>
-                            @foreach($brands as $brand)
-                            <option value="{{ $brand->id }}" {{ request('brand') == $brand->id ? 'selected' : '' }}>
-                                {{ $brand->name }}
-                            </option>
-                            @endforeach
-                        </select>
-                    </div>
-                    @endif
-
                     <!-- Buttons Group -->
                     <div class="flex gap-3 flex-shrink-0">
                         <button type="submit"
@@ -59,7 +43,7 @@
                             {{ __('Filter') }}
                         </button>
 
-                        @if(request('search') || request('brand'))
+                        @if(request('search'))
                         <a href="{{ route('categories.show', $category->slug) }}"
                            class="h-12 px-6 bg-white border border-gray-200 text-gray-600 font-medium rounded-xl hover:bg-gray-50 transition-all duration-200 flex items-center justify-center whitespace-nowrap">
                             {{ __('Clear') }}

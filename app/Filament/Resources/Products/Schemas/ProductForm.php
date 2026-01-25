@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\Products\Schemas;
 
-use App\Models\Brand;
 use App\Models\Category;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
@@ -53,13 +52,8 @@ class ProductForm
                             ->options(Category::active()->ordered()->pluck('name', 'id'))
                             ->searchable()
                             ->preload(),
-                        Select::make('brand_id')
-                            ->label('Brand')
-                            ->options(Brand::active()->ordered()->pluck('name', 'id'))
-                            ->searchable()
-                            ->preload(),
                     ])
-                    ->columns(3),
+                    ->columns(2),
 
                 Section::make('Images')
                     ->description('Drag to reorder. The first image will be used as the main product image.')
