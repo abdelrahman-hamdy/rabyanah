@@ -28,10 +28,6 @@ class BrandsTable
                 TextColumn::make('description')
                     ->limit(50)
                     ->toggleable(),
-                TextColumn::make('products_count')
-                    ->counts('products')
-                    ->label('Products')
-                    ->sortable(),
                 IconColumn::make('active')
                     ->boolean()
                     ->label('Active'),
