@@ -45,7 +45,8 @@ class Product extends Model
 
     public function scopeActive($query)
     {
-        return $query->where('is_active', true);
+        return $query->where('is_active', true)
+            ->whereHas('category', fn ($q) => $q->where('is_active', true));
     }
 
     public function scopeFeatured($query)
