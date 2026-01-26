@@ -55,10 +55,10 @@ class CategoryForm
                             ->visibility('public')
                             ->imageEditor()
                             ->imageResizeMode('cover')
-                            ->imageCropAspectRatio('1:1')
-                            ->imageResizeTargetWidth('400')
-                            ->imageResizeTargetHeight('400')
-                            ->maxSize(2048),
+                            ->imageCropAspectRatio('3:4')
+                            ->imageResizeTargetWidth('900')
+                            ->imageResizeTargetHeight('1200')
+                            ->maxSize(5120),
                         Toggle::make('is_active')
                             ->label('Active')
                             ->default(true),
