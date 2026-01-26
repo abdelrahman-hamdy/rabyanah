@@ -28,7 +28,7 @@
 
         @if($categories->count() > 0)
         <!-- Categories Grid -->
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 lg:gap-6" data-animate-children>
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-4 lg:gap-6" data-animate-children>
             @foreach($categories as $category)
             <a href="{{ route('categories.show', $category->slug) }}" class="group relative block">
                 <!-- Card Container -->

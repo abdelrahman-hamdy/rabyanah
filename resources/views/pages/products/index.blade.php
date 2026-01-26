@@ -9,7 +9,7 @@
         <!-- Categories Grid in Hero -->
         @if($categories->count() > 0)
         <div class="mt-12">
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 lg:gap-4">
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 lg:gap-4">
                 @foreach($categories as $category)
                 <a href="{{ route('products.index', ['category' => $category->slug]) }}#products-section"
                    class="group relative block">
