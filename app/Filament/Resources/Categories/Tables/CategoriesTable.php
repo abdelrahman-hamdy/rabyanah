@@ -2,12 +2,14 @@
 
 namespace App\Filament\Resources\Categories\Tables;
 
+use App\Models\Category;
+use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 
@@ -28,8 +30,7 @@ class CategoriesTable
                     ->counts('products')
                     ->label('Products')
                     ->sortable(),
-                IconColumn::make('is_active')
-                    ->boolean()
+                ToggleColumn::make('is_active')
                     ->label('Active'),
                 TextColumn::make('sort_order')
                     ->numeric()
@@ -45,6 +46,14 @@ class CategoriesTable
                     ->label('Active'),
             ])
             ->recordActions([
+                Action::make('toggleActive')
+                    ->label(fn (Category $record): string => $record->is_active ? 'Deactivate' : 'Activate')
+                    ->icon(fn (Category $record): string => $record->is_active ? 'heroicon-o-x-circle' : 'heroicon-o-check-circle')
+                    ->color(fn (Category $record): string => $record->is_active ? 'danger' : 'success')
+                    ->requiresConfirmation()
+                    ->action(function (Category $record): void {
+                        $record->update(['is_active' => ! $record->is_active]);
+                    }),
                 EditAction::make(),
             ])
             ->toolbarActions([
