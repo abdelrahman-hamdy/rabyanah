@@ -18,7 +18,7 @@
                 <div class="w-12 h-[2px] bg-rabyanah-red-500" data-animate="draw-line" data-delay="200"></div>
             </div>
             <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold font-playfair text-gray-900 leading-tight mb-4" data-animate="blur-in" data-delay="100">
-                {{ __('Shop Our') }}
+                {{ __('Explore Our') }}
                 <span class="text-rabyanah-blue-600">{{ __('Categories') }}</span>
             </h2>
             <p class="text-lg text-gray-600 leading-relaxed" data-animate="fade-up" data-delay="200">
