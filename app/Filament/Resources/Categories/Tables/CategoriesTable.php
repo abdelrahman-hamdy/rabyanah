@@ -7,9 +7,10 @@ use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Notifications\Notification;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 
@@ -30,7 +31,8 @@ class CategoriesTable
                     ->counts('products')
                     ->label('Products')
                     ->sortable(),
-                ToggleColumn::make('is_active')
+                IconColumn::make('is_active')
+                    ->boolean()
                     ->label('Active'),
                 TextColumn::make('sort_order')
                     ->numeric()
@@ -50,9 +52,14 @@ class CategoriesTable
                     ->label(fn (Category $record): string => $record->is_active ? 'Deactivate' : 'Activate')
                     ->icon(fn (Category $record): string => $record->is_active ? 'heroicon-o-x-circle' : 'heroicon-o-check-circle')
                     ->color(fn (Category $record): string => $record->is_active ? 'danger' : 'success')
-                    ->requiresConfirmation()
                     ->action(function (Category $record): void {
                         $record->update(['is_active' => ! $record->is_active]);
+
+                        Notification::make()
+                            ->success()
+                            ->title($record->is_active ? 'Category Activated' : 'Category Deactivated')
+                            ->body("Category \"{$record->name}\" has been ".($record->is_active ? 'activated' : 'deactivated').'.')
+                            ->send();
                     }),
                 EditAction::make(),
             ])
