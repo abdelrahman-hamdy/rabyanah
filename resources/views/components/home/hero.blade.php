@@ -27,7 +27,7 @@
         : \App\Models\SiteSetting::get('hero_cta_secondary', __('Partner With Us'));
 @endphp
 
-<section id="home" class="relative min-h-screen overflow-hidden">
+<section id="home" class="relative min-h-screen lg:min-h-[max(100vh,820px)] overflow-hidden">
     <!-- Gradient Background - Very subtle beige fading to transparent -->
     <div class="absolute inset-0 bg-gradient-to-b from-amber-50/80 via-orange-50/40 to-transparent"></div>
 
@@ -43,7 +43,7 @@
     </div>
 
     <!-- Main Content -->
-    <div class="relative container mx-auto px-4 lg:px-8 min-h-screen flex items-center">
+    <div class="relative container mx-auto px-4 lg:px-8 min-h-screen lg:min-h-[max(100vh,820px)] flex items-center">
         <div class="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center py-32 lg:py-0 w-full">
             <!-- Left Content -->
             <div class="text-center lg:text-left rtl:lg:text-right order-1">
