@@ -42,7 +42,7 @@
                 </h1>
 
                 <p class="text-lg text-gray-600 leading-relaxed">
-                    {{ __('Ready to partner with us? We\'d love to hear from you. Send us a message and our team will respond within 24 hours.') }}
+                    {{ __('Ready to partner with us? We\'d love to hear from you. Send us a message and our team will respond as soon as possible.') }}
                 </p>
             </div>
         </div>

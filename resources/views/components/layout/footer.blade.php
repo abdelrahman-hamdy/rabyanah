@@ -221,7 +221,7 @@
                             </div>
                             <div>
                                 <p class="text-gray-300">{{ $contactEmail }}</p>
-                                <p class="text-gray-400 text-sm">{{ __('We reply within 24 hours') }}</p>
+                                <p class="text-gray-400 text-sm">{{ __('We respond as soon as possible') }}</p>
                             </div>
                         </li>
                     @endif

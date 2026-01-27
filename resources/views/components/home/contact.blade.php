@@ -29,7 +29,7 @@
                 <span class="text-transparent bg-clip-text bg-gradient-to-r from-rabyanah-blue-400 to-white">{{ __('Conversation') }}</span>
             </h2>
             <p class="text-lg text-blue-100/70 leading-relaxed" data-animate="fade-up" data-delay="200">
-                {{ __('Ready to partner with us? We\'d love to hear from you. Send us a message and our team will respond within 24 hours.') }}
+                {{ __('Ready to partner with us? We\'d love to hear from you. Send us a message and our team will respond as soon as possible.') }}
             </p>
         </div>
 
