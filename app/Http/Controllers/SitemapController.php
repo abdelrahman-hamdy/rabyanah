@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Response;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
 
 class SitemapController extends Controller
@@ -70,12 +71,12 @@ class SitemapController extends Controller
 
         $xml .= '  <sitemap>'."\n";
         $xml .= "    <loc>{$baseUrl}/sitemap-products.xml</loc>"."\n";
-        $xml .= '    <lastmod>'.($productLastMod ? $productLastMod->toW3cString() : now()->toW3cString()).'</lastmod>'."\n";
+        $xml .= '    <lastmod>'.($productLastMod ? Carbon::parse($productLastMod)->toW3cString() : now()->toW3cString()).'</lastmod>'."\n";
         $xml .= '  </sitemap>'."\n";
 
         $xml .= '  <sitemap>'."\n";
         $xml .= "    <loc>{$baseUrl}/sitemap-categories.xml</loc>"."\n";
-        $xml .= '    <lastmod>'.($categoryLastMod ? $categoryLastMod->toW3cString() : now()->toW3cString()).'</lastmod>'."\n";
+        $xml .= '    <lastmod>'.($categoryLastMod ? Carbon::parse($categoryLastMod)->toW3cString() : now()->toW3cString()).'</lastmod>'."\n";
         $xml .= '  </sitemap>'."\n";
 
         $xml .= '</sitemapindex>';
