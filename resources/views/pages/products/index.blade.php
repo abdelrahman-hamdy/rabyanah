@@ -1,4 +1,21 @@
-<x-layout.app :title="__('Products') . ' - Rabyanah'">
+@php
+    $seoService = app(\App\Services\SeoService::class);
+    $pageTitle = __('Products') . ' - Rabyanah';
+    $pageDescription = __('Browse our complete collection of premium food products. Quality food brands from around the world at Rabyanah.');
+    $breadcrumbSchema = $seoService->getBreadcrumbSchema([
+        ['name' => __('Home'), 'url' => route('home')],
+        ['name' => __('Products')],
+    ]);
+    // Set noindex for filtered/search pages to avoid duplicate content
+    $noindex = request()->has('search') || request()->has('page');
+@endphp
+
+<x-layout.app
+    :title="$pageTitle"
+    :description="$pageDescription"
+    :schemas="[$breadcrumbSchema]"
+    :noindex="$noindex"
+>
     <!-- Hero Section with Categories -->
     <x-ui.archive-hero
         :label="__('Shop')"

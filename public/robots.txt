@@ -1,2 +1,43 @@
+# Rabyanah - Global Food Trade Company
+# https://rabyanah.com
+
 User-agent: *
-Disallow:
+Allow: /
+
+# Block admin areas
+Disallow: /admin
+Disallow: /admin/*
+Disallow: /filament
+Disallow: /filament/*
+
+# Block search with parameters to avoid duplicate content
+Disallow: /search
+Disallow: /search?*
+
+# Block API endpoints
+Disallow: /api/
+Disallow: /api/*
+
+# Block utility routes
+Disallow: /locale/*
+Disallow: /_debugbar/*
+Disallow: /livewire/*
+
+# Block storage internals
+Disallow: /storage/framework/
+Disallow: /storage/logs/
+
+# Allow important assets
+Allow: /images/
+Allow: /storage/
+Allow: /*.css
+Allow: /*.js
+Allow: /*.jpg
+Allow: /*.jpeg
+Allow: /*.png
+Allow: /*.webp
+Allow: /*.svg
+Allow: /*.gif
+
+# Sitemaps
+Sitemap: http://72.61.116.116/sitemap.xml

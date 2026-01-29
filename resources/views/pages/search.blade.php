@@ -1,4 +1,20 @@
-<x-layout.app :title="__('Search') . ($query ? ' - ' . $query : '') . ' - Rabyanah'">
+@php
+    $seoService = app(\App\Services\SeoService::class);
+    $pageTitle = __('Search') . ($query ? ' - ' . $query : '') . ' - Rabyanah';
+    $pageDescription = __('Search our catalog of premium food products. Find exactly what you are looking for at Rabyanah.');
+    $breadcrumbSchema = $seoService->getBreadcrumbSchema([
+        ['name' => __('Home'), 'url' => route('home')],
+        ['name' => __('Search')],
+    ]);
+@endphp
+
+{{-- Search pages should not be indexed to avoid duplicate content --}}
+<x-layout.app
+    :title="$pageTitle"
+    :description="$pageDescription"
+    :schemas="[$breadcrumbSchema]"
+    :noindex="true"
+>
     <!-- Hero Section with Archive Hero Component -->
     <x-ui.archive-hero
         :label="__('Find Products')"

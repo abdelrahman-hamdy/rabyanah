@@ -1,4 +1,18 @@
-<x-layout.app :title="__('Rabyanah - Global Food Trade Company')">
+@php
+    $seoService = app(\App\Services\SeoService::class);
+    $meta = $seoService->getDefaultMeta();
+    $webPageSchema = $seoService->getWebPageSchema(
+        $meta['title'],
+        $meta['description'],
+        route('home')
+    );
+@endphp
+
+<x-layout.app
+    :title="$meta['title']"
+    :description="$meta['description']"
+    :schemas="[$webPageSchema]"
+>
     {{-- Hero Section --}}
     <x-home.hero />
 

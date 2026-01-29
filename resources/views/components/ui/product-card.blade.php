@@ -10,6 +10,8 @@
             @if($product->image_url)
             <img src="{{ $product->image_url }}"
                  alt="{{ $product->localized_name }}"
+                 loading="lazy"
+                 decoding="async"
                  class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
             @else
             <div class="w-full h-full flex items-center justify-center">

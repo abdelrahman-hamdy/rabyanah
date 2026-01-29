@@ -1,9 +1,22 @@
-@props(['title' => 'Rabyanah - Global Food Trade'])
+@props([
+    'title' => 'Rabyanah - Global Food Trade',
+    'description' => null,
+    'image' => null,
+    'type' => 'website',
+    'canonical' => null,
+    'noindex' => false,
+    'schemas' => [],
+])
 
 @php
     $siteFavicon = \App\Models\SiteSetting::get('site_favicon');
     $faviconUrl = $siteFavicon ? Storage::url($siteFavicon) : asset('favicon.svg');
     $faviconType = $siteFavicon ? 'image/png' : 'image/svg+xml';
+
+    // Get organization schema for all pages
+    $seoService = app(\App\Services\SeoService::class);
+    $orgSchema = $seoService->getOrganizationSchema();
+    $allSchemas = array_merge([$orgSchema], $schemas);
 @endphp
 
 <!DOCTYPE html>
@@ -12,9 +25,19 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="description" content="Rabyanah - A global food trade company offering premium quality food products and brands.">
 
     <title>{{ $title }}</title>
+
+    {{-- SEO Meta Tags --}}
+    <x-seo.meta-tags
+        :title="$title"
+        :description="$description"
+        :image="$image"
+        :type="$type"
+        :canonical="$canonical"
+        :noindex="$noindex"
+        :schemas="$allSchemas"
+    />
 
     <!-- Favicon -->
     <link rel="icon" type="{{ $faviconType }}" href="{{ $faviconUrl }}">

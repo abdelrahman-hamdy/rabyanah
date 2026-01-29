@@ -1,4 +1,18 @@
-<x-layout.app :title="__('About Us') . ' - Rabyanah'">
+@php
+    $seoService = app(\App\Services\SeoService::class);
+    $pageTitle = __('About Us') . ' - Rabyanah';
+    $pageDescription = __('Learn about Rabyanah - a global food trade company dedicated to delivering premium quality food products and distinguished brands from around the world.');
+    $breadcrumbSchema = $seoService->getBreadcrumbSchema([
+        ['name' => __('Home'), 'url' => route('home')],
+        ['name' => __('About Us')],
+    ]);
+@endphp
+
+<x-layout.app
+    :title="$pageTitle"
+    :description="$pageDescription"
+    :schemas="[$breadcrumbSchema]"
+>
     {{-- Hero Section with Archive Hero Styling --}}
     <section class="relative overflow-hidden" style="padding-top: clamp(160px, 20vw, 220px);">
         {{-- Gradient Background - Same warm beige as archive hero --}}

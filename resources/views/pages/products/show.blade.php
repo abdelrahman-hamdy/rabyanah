@@ -1,4 +1,25 @@
-<x-layout.app :title="$product->localized_name . ' - Rabyanah'">
+@php
+    $seoService = app(\App\Services\SeoService::class);
+    $meta = $seoService->getProductMeta($product);
+    $productSchema = $seoService->getProductSchema($product);
+    $breadcrumbItems = [
+        ['name' => __('Home'), 'url' => route('home')],
+        ['name' => __('Products'), 'url' => route('products.index')],
+    ];
+    if ($product->category) {
+        $breadcrumbItems[] = ['name' => $product->category->localized_name, 'url' => route('categories.show', $product->category->slug)];
+    }
+    $breadcrumbItems[] = ['name' => $product->localized_name];
+    $breadcrumbSchema = $seoService->getBreadcrumbSchema($breadcrumbItems);
+@endphp
+
+<x-layout.app
+    :title="$meta['title']"
+    :description="$meta['description']"
+    :image="$meta['image']"
+    type="product"
+    :schemas="[$productSchema, $breadcrumbSchema]"
+>
     <!-- Breadcrumbs Section with warm background -->
     <section class="relative overflow-hidden" style="padding-top: clamp(140px, 18vw, 180px); padding-bottom: 40px;">
         <!-- Gradient Background - Same warm beige as home page -->

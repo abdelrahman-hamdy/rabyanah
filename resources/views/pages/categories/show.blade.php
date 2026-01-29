@@ -1,4 +1,21 @@
-<x-layout.app :title="$category->localized_name . ' - Rabyanah'">
+@php
+    $seoService = app(\App\Services\SeoService::class);
+    $meta = $seoService->getCategoryMeta($category);
+    $breadcrumbSchema = $seoService->getBreadcrumbSchema([
+        ['name' => __('Home'), 'url' => route('home')],
+        ['name' => __('Products'), 'url' => route('products.index')],
+        ['name' => $category->localized_name],
+    ]);
+    $noindex = request()->has('search') || request()->has('page');
+@endphp
+
+<x-layout.app
+    :title="$meta['title']"
+    :description="$meta['description']"
+    :image="$meta['image']"
+    :schemas="[$breadcrumbSchema]"
+    :noindex="$noindex"
+>
     <!-- Hero Section with Archive Hero Component -->
     <x-ui.archive-hero
         :label="__('Category')"
