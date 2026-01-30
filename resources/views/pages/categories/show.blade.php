@@ -25,7 +25,7 @@
     >
         @if($category->image_url)
         <div class="flex justify-center mt-10">
-            <div class="w-28 h-28 md:w-36 md:h-36 rounded-2xl overflow-hidden bg-white shadow-xl shadow-gray-200/50 p-3">
+            <div class="w-36 h-48 md:w-44 md:h-60 lg:w-52 lg:h-72 rounded-2xl overflow-hidden bg-white shadow-xl shadow-gray-200/50 p-3">
                 <img src="{{ $category->image_url }}"
                      alt="{{ $category->localized_name }}"
                      class="w-full h-full object-contain">
