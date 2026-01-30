@@ -8,7 +8,7 @@ use Filament\Widgets\Widget;
 
 class ClearCacheWidget extends Widget
 {
-    protected static string $view = 'filament.widgets.clear-cache-widget';
+    protected string $view = 'filament.widgets.clear-cache-widget';
 
     protected int|string|array $columnSpan = 'full';
 
