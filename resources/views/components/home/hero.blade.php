@@ -112,21 +112,21 @@
                     <!-- Top Product - Hamz Coffee (Wide, from Top) - Behind others -->
                     <div class="hero-product hero-product-top absolute -top-[2%] left-[50%] w-[55%] z-10"
                          style="transform: translateX(-50%);">
-                        <img src="{{ asset('images/hero/hamz-coffe.png') }}"
+                        <img src="{{ asset('images/hero/hamz-coffe.webp') }}"
                              alt="Hamz Coffee"
                              class="w-full h-auto drop-shadow-xl">
                     </div>
 
                     <!-- Left Product - 5 Star Tune (Tall, from Left) -->
                     <div class="hero-product hero-product-left absolute top-[15%] left-[2%] w-[30%] z-20">
-                        <img src="{{ asset('images/hero/5star-tune.png') }}"
+                        <img src="{{ asset('images/hero/5star-tune.webp') }}"
                              alt="5 Star Tune"
                              class="w-full h-auto drop-shadow-xl">
                     </div>
 
                     <!-- Right Product - Leptis Oil (Tall, from Right) -->
                     <div class="hero-product hero-product-right absolute top-[15%] right-[2%] w-[30%] z-20">
-                        <img src="{{ asset('images/hero/leptis-oil.png') }}"
+                        <img src="{{ asset('images/hero/leptis-oil.webp') }}"
                              alt="Leptis Oil"
                              class="w-full h-auto drop-shadow-xl">
                     </div>
@@ -134,7 +134,7 @@
                     <!-- Center Product - Cookies (Main Focal) - Front -->
                     <div class="hero-product hero-product-center absolute left-[50%] w-[42%] z-30"
                          style="transform: translateX(-50%); top: 35%;">
-                        <img src="{{ asset('images/hero/danis-cookies.png') }}"
+                        <img src="{{ asset('images/hero/danis-cookies.webp') }}"
                              alt="Danis Cookies"
                              class="w-full h-auto drop-shadow-2xl">
                     </div>
@@ -142,7 +142,7 @@
                     <!-- Bottom Product - Nutro Biscuits (Wide, from Bottom) -->
                     <div class="hero-product hero-product-bottom absolute bottom-[2%] left-[50%] w-[65%] z-25"
                          style="transform: translateX(-50%);">
-                        <img src="{{ asset('images/hero/nutro-bisciuts.png') }}"
+                        <img src="{{ asset('images/hero/nutro-bisciuts.webp') }}"
                              alt="Nutro Biscuits"
                              class="w-full h-auto drop-shadow-xl">
                     </div>
