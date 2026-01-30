@@ -3,7 +3,9 @@
 namespace App\Filament\Resources\Categories\Tables;
 
 use App\Models\Category;
+use App\Services\ImageCompressionService;
 use Filament\Actions\Action;
+use Filament\Actions\BulkAction;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -13,6 +15,7 @@ use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Collection;
 
 class CategoriesTable
 {
@@ -61,10 +64,77 @@ class CategoriesTable
                             ->body("Category \"{$record->name}\" has been ".($record->is_active ? 'activated' : 'deactivated').'.')
                             ->send();
                     }),
+                Action::make('compressImage')
+                    ->label('Compress Image')
+                    ->icon('heroicon-o-arrow-down-tray')
+                    ->color('success')
+                    ->requiresConfirmation()
+                    ->modalHeading('Compress Category Image')
+                    ->modalDescription('This will losslessly compress the image for this category. No quality will be lost.')
+                    ->modalSubmitActionLabel('Compress')
+                    ->action(function (Category $record): void {
+                        $service = app(ImageCompressionService::class);
+                        $result = $service->optimizeCategory($record);
+
+                        if ($result['images_processed'] === 0) {
+                            Notification::make()
+                                ->warning()
+                                ->title('No Image Found')
+                                ->body('This category has no image to compress.')
+                                ->send();
+
+                            return;
+                        }
+
+                        Notification::make()
+                            ->success()
+                            ->title('Image Compressed')
+                            ->body(sprintf(
+                                'Saved %s (%.1f%%)',
+                                ImageCompressionService::formatBytes($result['saved_bytes']),
+                                $result['saved_percentage']
+                            ))
+                            ->send();
+                    }),
                 EditAction::make(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
+                    BulkAction::make('compressImages')
+                        ->label('Compress Images')
+                        ->icon('heroicon-o-arrow-down-tray')
+                        ->color('success')
+                        ->requiresConfirmation()
+                        ->modalHeading('Compress Selected Categories Images')
+                        ->modalDescription('This will losslessly compress all images for the selected categories. No quality will be lost.')
+                        ->modalSubmitActionLabel('Compress All')
+                        ->action(function (Collection $records): void {
+                            $service = app(ImageCompressionService::class);
+                            $result = $service->optimizeCategories($records);
+
+                            if ($result['images_processed'] === 0) {
+                                Notification::make()
+                                    ->warning()
+                                    ->title('No Images Found')
+                                    ->body('The selected categories have no images to compress.')
+                                    ->send();
+
+                                return;
+                            }
+
+                            Notification::make()
+                                ->success()
+                                ->title('Images Compressed')
+                                ->body(sprintf(
+                                    'Compressed %d image(s) from %d category(ies). Saved %s (%.1f%%)',
+                                    $result['images_processed'],
+                                    $records->count(),
+                                    ImageCompressionService::formatBytes($result['saved_bytes']),
+                                    $result['saved_percentage']
+                                ))
+                                ->send();
+                        })
+                        ->deselectRecordsAfterCompletion(),
                     DeleteBulkAction::make(),
                 ]),
             ])

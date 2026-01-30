@@ -3,8 +3,10 @@
 namespace App\Filament\Resources\Products\Tables;
 
 use App\Models\Product;
+use App\Services\ImageCompressionService;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
+use Filament\Actions\BulkAction;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
@@ -17,6 +19,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Collection;
 
 class ProductsTable
 {
@@ -72,6 +75,39 @@ class ProductsTable
                             ->body("Product \"{$record->name}\" has been ".($record->is_featured ? 'added to' : 'removed from').' featured products.')
                             ->send();
                     }),
+                Action::make('compressImages')
+                    ->label('Compress Images')
+                    ->icon('heroicon-o-arrow-down-tray')
+                    ->color('success')
+                    ->requiresConfirmation()
+                    ->modalHeading('Compress Product Images')
+                    ->modalDescription('This will losslessly compress all gallery images for this product. No quality will be lost.')
+                    ->modalSubmitActionLabel('Compress')
+                    ->action(function (Product $record): void {
+                        $service = app(ImageCompressionService::class);
+                        $result = $service->optimizeProduct($record);
+
+                        if ($result['images_processed'] === 0) {
+                            Notification::make()
+                                ->warning()
+                                ->title('No Images Found')
+                                ->body('This product has no images to compress.')
+                                ->send();
+
+                            return;
+                        }
+
+                        Notification::make()
+                            ->success()
+                            ->title('Images Compressed')
+                            ->body(sprintf(
+                                'Compressed %d image(s). Saved %s (%.1f%%)',
+                                $result['images_processed'],
+                                ImageCompressionService::formatBytes($result['saved_bytes']),
+                                $result['saved_percentage']
+                            ))
+                            ->send();
+                    }),
                 EditAction::make(),
                 ActionGroup::make([
                     ReplicateAction::make()
@@ -107,6 +143,41 @@ class ProductsTable
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
+                    BulkAction::make('compressImages')
+                        ->label('Compress Images')
+                        ->icon('heroicon-o-arrow-down-tray')
+                        ->color('success')
+                        ->requiresConfirmation()
+                        ->modalHeading('Compress Selected Products Images')
+                        ->modalDescription('This will losslessly compress all images for the selected products. No quality will be lost.')
+                        ->modalSubmitActionLabel('Compress All')
+                        ->action(function (Collection $records): void {
+                            $service = app(ImageCompressionService::class);
+                            $result = $service->optimizeProducts($records);
+
+                            if ($result['images_processed'] === 0) {
+                                Notification::make()
+                                    ->warning()
+                                    ->title('No Images Found')
+                                    ->body('The selected products have no images to compress.')
+                                    ->send();
+
+                                return;
+                            }
+
+                            Notification::make()
+                                ->success()
+                                ->title('Images Compressed')
+                                ->body(sprintf(
+                                    'Compressed %d image(s) from %d product(s). Saved %s (%.1f%%)',
+                                    $result['images_processed'],
+                                    $records->count(),
+                                    ImageCompressionService::formatBytes($result['saved_bytes']),
+                                    $result['saved_percentage']
+                                ))
+                                ->send();
+                        })
+                        ->deselectRecordsAfterCompletion(),
                     DeleteBulkAction::make(),
                 ]),
             ])
