@@ -69,48 +69,15 @@
     <!-- Infinite Scroll Trigger -->
     @if($hasMorePages)
     <div class="mt-12 flex flex-col items-center"
-         x-data="{
-             init() {
-                 const observer = new IntersectionObserver((entries) => {
-                     entries.forEach(entry => {
-                         if (entry.isIntersecting && !@js($loading)) {
-                             @this.loadMore();
-                         }
-                     });
-                 }, { rootMargin: '200px' });
-                 observer.observe(this.$el);
-             }
-         }">
-        <!-- Load More Button (fallback) -->
-        <button wire:click="loadMore"
-                wire:loading.attr="disabled"
-                class="group relative inline-flex items-center justify-center px-8 py-4 bg-white border-2 border-gray-200 text-gray-700 font-semibold rounded-2xl hover:border-rabyanah-blue-500 hover:text-rabyanah-blue-600 transition-all duration-300 shadow-sm hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed overflow-hidden">
-            <!-- Default State -->
-            <span wire:loading.remove wire:target="loadMore" class="flex items-center gap-3">
-                <svg class="w-5 h-5 transition-transform duration-300 group-hover:translate-y-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
-                </svg>
-                {{ __('Load More') }}
-            </span>
-
-            <!-- Loading State -->
-            <span wire:loading wire:target="loadMore" class="flex items-center gap-3">
-                <svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-                {{ __('Loading...') }}
-            </span>
-
-            <!-- Progress Bar -->
-            <div class="absolute bottom-0 left-0 h-1 bg-rabyanah-blue-500 transition-all duration-300"
-                 style="width: {{ $total > 0 ? (count($products) / $total) * 100 : 0 }}%"></div>
-        </button>
-
-        <!-- Progress Indicator -->
-        <p class="mt-4 text-sm text-gray-500">
-            {{ count($products) }} / {{ $total }} {{ __('products loaded') }}
-        </p>
+         x-data="{ loading: false }"
+         x-intersect:enter.margin.300px="if (!loading) { loading = true; $wire.loadMore().then(() => loading = false); }">
+        <!-- Circular Loading Spinner -->
+        <div class="flex flex-col items-center gap-4">
+            <div class="w-10 h-10 border-4 border-gray-200 border-t-rabyanah-blue-500 rounded-full animate-spin"></div>
+            <p class="text-sm text-gray-500">
+                {{ count($products) }} / {{ $total }} {{ __('products loaded') }}
+            </p>
+        </div>
     </div>
     @else
     <!-- All Loaded State -->
