@@ -23,7 +23,7 @@ class ProductGrid extends Component
 
     public int $page = 1;
 
-    public array $products = [];
+    public array $productIds = [];
 
     public int $total = 0;
 
@@ -42,7 +42,7 @@ class ProductGrid extends Component
     public function loadInitialProducts(): void
     {
         $this->page = 1;
-        $this->products = [];
+        $this->productIds = [];
         $this->loadMore();
     }
 
@@ -54,9 +54,7 @@ class ProductGrid extends Component
 
         $this->loading = true;
 
-        $query = Product::with(['category'])
-            ->active()
-            ->ordered();
+        $query = Product::active()->ordered();
 
         // Filter by specific category (for category page)
         if ($this->categoryId) {
@@ -80,14 +78,14 @@ class ProductGrid extends Component
 
         $this->total = $query->count();
 
-        $newProducts = $query
+        $newProductIds = $query
             ->skip(($this->page - 1) * $this->perPage)
             ->take($this->perPage)
-            ->get()
+            ->pluck('id')
             ->toArray();
 
-        $this->products = array_merge($this->products, $newProducts);
-        $this->hasMorePages = count($this->products) < $this->total;
+        $this->productIds = array_merge($this->productIds, $newProductIds);
+        $this->hasMorePages = count($this->productIds) < $this->total;
         $this->page++;
         $this->loading = false;
     }
@@ -105,7 +103,7 @@ class ProductGrid extends Component
     public function resetAndReload(): void
     {
         $this->page = 1;
-        $this->products = [];
+        $this->productIds = [];
         $this->hasMorePages = true;
         $this->loadMore();
     }
@@ -115,6 +113,21 @@ class ProductGrid extends Component
         $this->search = '';
         $this->category = '';
         $this->resetAndReload();
+    }
+
+    public function getProductsProperty()
+    {
+        if (empty($this->productIds)) {
+            return collect();
+        }
+
+        return Product::with(['category'])
+            ->whereIn('id', $this->productIds)
+            ->get()
+            ->sortBy(function ($product) {
+                return array_search($product->id, $this->productIds);
+            })
+            ->values();
     }
 
     public function getCategories()
@@ -128,6 +141,7 @@ class ProductGrid extends Component
     public function render()
     {
         return view('livewire.product-grid', [
+            'products' => $this->products,
             'categories' => $this->categoryId ? null : $this->getCategories(),
         ]);
     }

@@ -51,10 +51,7 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8"
          x-data="{ shown: false }"
          x-init="setTimeout(() => shown = true, 100)">
-        @foreach($products as $index => $productData)
-            @php
-                $product = \App\Models\Product::hydrate([$productData])->first();
-            @endphp
+        @foreach($products as $index => $product)
             <div class="product-card-wrapper"
                  x-data="{ visible: false }"
                  x-init="setTimeout(() => visible = true, {{ ($index % 12) * 50 }})"
