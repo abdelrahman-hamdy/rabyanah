@@ -50,8 +50,8 @@
     <!-- Styles & Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-    <!-- Alpine.js -->
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <!-- Livewire Styles -->
+    @livewireStyles
 </head>
 <body class="font-sans antialiased bg-white text-gray-900 overscroll-none">
     <!-- Navbar -->
@@ -66,5 +66,8 @@
     <x-layout.footer />
 
     @stack('scripts')
+
+    <!-- Livewire Scripts (includes Alpine.js) -->
+    @livewireScripts
 </body>
 </html>
