@@ -69,22 +69,19 @@
     <!-- Infinite Scroll Trigger -->
     @if($hasMorePages)
     <div class="mt-12 flex flex-col items-center"
-         x-data="{
-             loading: false,
-             init() {
-                 const observer = new IntersectionObserver((entries) => {
-                     entries.forEach(entry => {
-                         if (entry.isIntersecting && !this.loading) {
-                             this.loading = true;
-                             $wire.loadMore().then(() => {
-                                 this.loading = false;
-                             });
-                         }
-                     });
-                 }, { rootMargin: '300px' });
-                 observer.observe(this.$el);
-             }
-         }">
+         x-data="{ loading: false }"
+         x-init="
+             const component = @this;
+             const observer = new IntersectionObserver((entries) => {
+                 entries.forEach(entry => {
+                     if (entry.isIntersecting && !loading) {
+                         loading = true;
+                         component.loadMore().then(() => { loading = false; });
+                     }
+                 });
+             }, { rootMargin: '300px' });
+             observer.observe($el);
+         ">
         <!-- Circular Loading Spinner -->
         <div class="flex flex-col items-center gap-4">
             <div class="w-10 h-10 border-4 border-gray-200 border-t-rabyanah-blue-500 rounded-full animate-spin"></div>
