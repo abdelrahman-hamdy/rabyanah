@@ -15,22 +15,25 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
-// Home Page
-Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/api/catalog-products', [HomeController::class, 'catalogProducts'])->name('api.catalog-products');
+// Cached public routes (7 days = 604800 seconds)
+Route::middleware(['cache.response:604800'])->group(function () {
+    // Home Page
+    Route::get('/', [HomeController::class, 'index'])->name('home');
+    Route::get('/api/catalog-products', [HomeController::class, 'catalogProducts'])->name('api.catalog-products');
 
-// About Page
-Route::get('/about', [AboutController::class, 'index'])->name('about');
+    // About Page
+    Route::get('/about', [AboutController::class, 'index'])->name('about');
 
-// Products
-Route::get('/products', [ProductController::class, 'index'])->name('products.index');
-Route::get('/products/{slug}', [ProductController::class, 'show'])->name('products.show');
+    // Products
+    Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+    Route::get('/products/{slug}', [ProductController::class, 'show'])->name('products.show');
 
-// Categories
-Route::get('/categories/{slug}', [CategoryController::class, 'show'])->name('categories.show');
+    // Categories
+    Route::get('/categories/{slug}', [CategoryController::class, 'show'])->name('categories.show');
 
-// Search
-Route::get('/search', [SearchController::class, 'index'])->name('search');
+    // Search (1 day cache = 86400 seconds)
+    Route::get('/search', [SearchController::class, 'index'])->name('search')->withoutMiddleware(['cache.response:604800'])->middleware(['cache.response:86400']);
+});
 
 // Contact
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
