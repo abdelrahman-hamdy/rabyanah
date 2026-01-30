@@ -5,52 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Product;
 use App\Services\CacheService;
-use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class ProductController extends Controller
 {
-    public function index(Request $request): View
+    public function index(): View
     {
         $locale = app()->getLocale();
-        $search = $request->get('search');
-        $categorySlug = $request->get('category');
-        $page = $request->get('page', 1);
 
-        // Only cache when no search/filters applied
-        if (! $search && ! $categorySlug) {
-            $cacheKey = "products_index_{$page}_{$locale}";
-
-            $products = CacheService::remember(
-                [CacheService::TAG_PRODUCTS],
-                $cacheKey,
-                CacheService::TTL_WEEK,
-                fn () => Product::with(['category'])
-                    ->active()
-                    ->ordered()
-                    ->paginate(12)
-            );
-        } else {
-            $query = Product::with(['category'])
-                ->active()
-                ->ordered();
-
-            if ($search) {
-                $query->where(function ($q) use ($search) {
-                    $q->where('name', 'like', "%{$search}%")
-                        ->orWhere('name_ar', 'like', "%{$search}%")
-                        ->orWhere('description', 'like', "%{$search}%")
-                        ->orWhere('description_ar', 'like', "%{$search}%");
-                });
-            }
-
-            if ($categorySlug) {
-                $query->whereHas('category', fn ($q) => $q->where('slug', $categorySlug));
-            }
-
-            $products = $query->paginate(12)->withQueryString();
-        }
-
+        // Categories for hero section only - products handled by Livewire
         $categories = CacheService::remember(
             [CacheService::TAG_CATEGORIES],
             "products_categories_{$locale}",
@@ -62,7 +25,6 @@ class ProductController extends Controller
         );
 
         return view('pages.products.index', [
-            'products' => $products,
             'categories' => $categories,
         ]);
     }
