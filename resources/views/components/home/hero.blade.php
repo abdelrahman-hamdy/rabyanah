@@ -156,10 +156,12 @@
     </div>
 
     <!-- Scroll Indicator -->
-    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center space-y-2 animate-bounce hero-cta" style="animation-delay: 1.2s;">
-        <span class="text-gray-400 text-xs font-medium tracking-widest uppercase">{{ __('Scroll') }}</span>
-        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <a href="#featured"
+       class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center text-gray-400 hover:text-rabyanah-blue-600 transition-colors hero-cta"
+       style="animation-delay: 1.2s;">
+        <span class="text-xs font-medium tracking-widest uppercase">{{ __('Scroll') }}</span>
+        <svg class="w-5 h-5 mt-1 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
         </svg>
-    </div>
+    </a>
 </section>
