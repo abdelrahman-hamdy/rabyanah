@@ -141,10 +141,10 @@
         @endif
 
         <!-- See More Link -->
-        <div class="text-center mt-12" data-animate="fade-up" data-delay="400">
+        <div class="text-center mt-16" data-animate="fade-up" data-delay="400">
             <a href="#products"
-               class="inline-flex flex-col items-center text-rabyanah-blue-600 font-medium hover:text-rabyanah-blue-700 transition-colors">
-                <span>{{ __('See More') }}</span>
+               class="inline-flex flex-col items-center text-gray-400 hover:text-rabyanah-blue-600 transition-colors">
+                <span class="text-xs font-medium tracking-widest uppercase">{{ __('See More') }}</span>
                 <svg class="w-5 h-5 mt-1 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
                 </svg>
