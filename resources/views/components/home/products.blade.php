@@ -32,7 +32,7 @@
                             class="px-6 py-3 rounded-full font-medium transition-all duration-300 disabled:opacity-50">
                         {{ __('All Categories') }}
                     </button>
-                    @foreach($categories->take(5) as $category)
+                    @foreach($categories as $category)
                     <button @click="loadCategory('{{ $category->slug }}')"
                             :class="active === '{{ $category->slug }}' ? 'bg-rabyanah-blue-600 text-white shadow-lg shadow-rabyanah-blue-600/25' : 'bg-white text-gray-600 hover:text-rabyanah-blue-600 hover:border-rabyanah-blue-200 border border-gray-200'"
                             :disabled="loading"
