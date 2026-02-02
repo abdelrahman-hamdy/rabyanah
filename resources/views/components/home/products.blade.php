@@ -1,7 +1,7 @@
 @props(['products' => [], 'categories' => []])
 
 <section class="py-24 lg:py-32 bg-gray-50">
-    <span id="products" class="block" style="position: relative; top: 60px; visibility: hidden;"></span>
+    <span id="products" class="block" style="position: relative; top: -80px; visibility: hidden;"></span>
     <div class="container mx-auto px-4 lg:px-8">
         <!-- Section Header -->
         <div class="text-center max-w-3xl mx-auto mb-16">

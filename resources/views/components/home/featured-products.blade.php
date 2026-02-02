@@ -1,7 +1,7 @@
 @props(['products' => []])
 
 <section class="py-24 lg:py-32 bg-gradient-to-b from-gray-50 to-white overflow-hidden">
-    <span id="featured" class="block" style="position: relative; top: 60px; visibility: hidden;"></span>
+    <span id="featured" class="block" style="position: relative; top: -80px; visibility: hidden;"></span>
     <div class="container mx-auto px-4 lg:px-8">
         <!-- Section Header -->
         <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 mb-16">
