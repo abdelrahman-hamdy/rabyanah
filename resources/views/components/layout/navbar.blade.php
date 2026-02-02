@@ -42,14 +42,14 @@
                     </svg>
                 </a>
 
-                <!-- Language Switcher -->
-                <a href="{{ route('locale.switch', app()->getLocale() === 'ar' ? 'en' : 'ar') }}"
+                <!-- Language Switcher (hidden for now - English only) -->
+                {{-- <a href="{{ route('locale.switch', app()->getLocale() === 'ar' ? 'en' : 'ar') }}"
                    class="nav-link flex items-center space-x-2 rtl:space-x-reverse px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 border border-white/20 hover:border-white/40">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
                     </svg>
                     <span>{{ app()->getLocale() === 'ar' ? 'EN' : 'العربية' }}</span>
-                </a>
+                </a> --}}
 
                 <!-- CTA Button -->
                 <a href="{{ route('contact') }}" class="nav-cta group relative overflow-hidden px-7 py-3 rounded-full font-semibold text-sm transition-all duration-300">
@@ -99,11 +99,13 @@
                         {{ __('Contact') }}
                     </a>
                 </div>
-                <div class="mt-6 pt-6 border-t border-gray-100 flex items-center justify-between">
+                <div class="mt-6 pt-6 border-t border-gray-100 flex items-center justify-end">
+                    {{-- Language switcher hidden for now - English only
                     <a href="{{ route('locale.switch', app()->getLocale() === 'ar' ? 'en' : 'ar') }}"
                        class="text-gray-600 hover:text-rabyanah-blue-600 font-medium transition-colors">
                         {{ app()->getLocale() === 'ar' ? 'English' : 'العربية' }}
                     </a>
+                    --}}
                     <a href="{{ route('contact') }}"
                        class="bg-rabyanah-red-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-rabyanah-red-700 transition-all duration-300">
                         {{ __('Get in Touch') }}
