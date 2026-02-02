@@ -141,7 +141,7 @@
         @endif
 
         <!-- See More Link -->
-        <div class="text-center mt-16" data-animate="fade-up" data-delay="400">
+        <div class="text-center" style="margin-top: 124px;" data-animate="fade-up" data-delay="400">
             <a href="#products"
                class="inline-flex flex-col items-center text-gray-400 hover:text-rabyanah-blue-600 transition-colors">
                 <span class="text-xs font-medium tracking-widest uppercase">{{ __('See More') }}</span>
