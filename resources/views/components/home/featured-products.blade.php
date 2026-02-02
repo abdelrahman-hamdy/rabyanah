@@ -1,6 +1,7 @@
 @props(['products' => []])
 
-<section id="featured" class="py-24 lg:py-32 bg-gradient-to-b from-gray-50 to-white overflow-hidden">
+<section class="py-24 lg:py-32 bg-gradient-to-b from-gray-50 to-white overflow-hidden">
+    <span id="featured" class="block" style="position: relative; top: 60px; visibility: hidden;"></span>
     <div class="container mx-auto px-4 lg:px-8">
         <!-- Section Header -->
         <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 mb-16">
@@ -141,7 +142,7 @@
         @endif
 
         <!-- See More Link -->
-        <div class="text-center" style="margin-top: 124px;" data-animate="fade-up" data-delay="400">
+        <div class="text-center mt-12" data-animate="fade-up" data-delay="400">
             <a href="#products"
                class="inline-flex flex-col items-center text-gray-400 hover:text-rabyanah-blue-600 transition-colors">
                 <span class="text-xs font-medium tracking-widest uppercase">{{ __('See More') }}</span>
