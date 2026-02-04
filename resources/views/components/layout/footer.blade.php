@@ -31,7 +31,7 @@
     $workingHours = SiteSetting::get('working_hours');
 
     // Get categories for footer
-    $footerCategories = Category::where('is_active', true)->take(5)->get();
+    $footerCategories = Category::where('is_active', true)->get();
 @endphp
 
 <footer class="relative bg-gray-900 overflow-hidden">
