@@ -23,10 +23,10 @@
                         {{ __('Products') }}
                     </a>
                     <a href="{{ route('about') }}" class="nav-link px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300">
-                        {{ __('About') }}
+                        {{ __('About Us') }}
                     </a>
                     <a href="{{ route('contact') }}" class="nav-link px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300">
-                        {{ __('Contact') }}
+                        {{ __('Contact Us') }}
                     </a>
                 </div>
             </div>
@@ -93,10 +93,10 @@
                         {{ __('Products') }}
                     </a>
                     <a href="{{ route('about') }}" class="font-medium text-gray-800 hover:text-rabyanah-blue-600 hover:bg-rabyanah-blue-50 px-4 py-3 rounded-xl transition-all duration-300">
-                        {{ __('About') }}
+                        {{ __('About Us') }}
                     </a>
                     <a href="{{ route('contact') }}" class="font-medium text-gray-800 hover:text-rabyanah-blue-600 hover:bg-rabyanah-blue-50 px-4 py-3 rounded-xl transition-all duration-300">
-                        {{ __('Contact') }}
+                        {{ __('Contact Us') }}
                     </a>
                 </div>
                 <div class="mt-6 pt-6 border-t border-gray-100 flex items-center justify-end">
