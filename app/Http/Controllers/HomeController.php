@@ -100,6 +100,7 @@ class HomeController extends Controller
         return response()->json([
             'html' => $html,
             'count' => $products->count(),
-        ]);
+        ])->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
+          ->header('Pragma', 'no-cache');
     }
 }
