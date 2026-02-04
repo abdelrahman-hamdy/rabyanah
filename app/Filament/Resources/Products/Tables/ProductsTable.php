@@ -20,6 +20,7 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Storage;
 
 class ProductsTable
 {
@@ -33,6 +34,48 @@ class ProductsTable
                     ->circular()
                     ->getStateUsing(fn ($record) => $record->gallery[0] ?? null)
                     ->defaultImageUrl(fn () => 'https://ui-avatars.com/api/?name=P&color=FFFFFF&background=2563eb'),
+                TextColumn::make('image_size')
+                    ->label('Image Size')
+                    ->getStateUsing(function (Product $record): string {
+                        if (empty($record->gallery)) {
+                            return '-';
+                        }
+
+                        $totalSize = 0;
+                        foreach ($record->gallery as $image) {
+                            if (Storage::disk('public')->exists($image)) {
+                                $totalSize += Storage::disk('public')->size($image);
+                            }
+                        }
+
+                        return ImageCompressionService::formatBytes($totalSize);
+                    })
+                    ->badge()
+                    ->color(function (Product $record): string {
+                        if (empty($record->gallery)) {
+                            return 'gray';
+                        }
+
+                        $totalSize = 0;
+                        foreach ($record->gallery as $image) {
+                            if (Storage::disk('public')->exists($image)) {
+                                $totalSize += Storage::disk('public')->size($image);
+                            }
+                        }
+
+                        // Color based on size: green < 500KB, yellow < 1MB, red >= 1MB
+                        if ($totalSize < 500 * 1024) {
+                            return 'success';
+                        } elseif ($totalSize < 1024 * 1024) {
+                            return 'warning';
+                        }
+
+                        return 'danger';
+                    })
+                    ->sortable(query: function ($query, string $direction) {
+                        // Note: Sorting by computed size is complex, skip for now
+                        return $query;
+                    }),
                 TextColumn::make('name')
                     ->searchable()
                     ->sortable(),
