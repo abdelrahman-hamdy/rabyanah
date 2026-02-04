@@ -92,24 +92,13 @@ function catalogFilter() {
     return {
         active: 'all',
         loading: false,
-        cache: {},
 
-        init() {
-            // Pre-cache the initial 'all' category HTML
-            this.cache['all'] = this.$refs.productsGrid.innerHTML;
-        },
+        init() {},
 
         async loadCategory(category) {
             if (this.active === category || this.loading) return;
 
             this.active = category;
-
-            // Check cache first
-            if (this.cache[category]) {
-                this.$refs.productsGrid.innerHTML = this.cache[category];
-                return;
-            }
-
             this.loading = true;
 
             try {
@@ -123,9 +112,6 @@ function catalogFilter() {
                 if (!response.ok) throw new Error('Network response was not ok');
 
                 const data = await response.json();
-
-                // Cache the response
-                this.cache[category] = data.html;
 
                 // Update the grid with animation
                 this.$refs.productsGrid.style.opacity = '0';
