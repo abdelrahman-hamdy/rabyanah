@@ -45,7 +45,7 @@ class HomeController extends Controller
             fn () => Product::active()
                 ->where('is_featured', false)
                 ->with(['category'])
-                ->latest()
+                ->inRandomOrder()
                 ->take(8)
                 ->get()
         );
@@ -80,7 +80,7 @@ class HomeController extends Controller
             function () use ($categorySlug) {
                 $query = Product::active()
                     ->with(['category:id,name,name_ar,slug'])
-                    ->latest()
+                    ->inRandomOrder()
                     ->take(8);
 
                 if ($categorySlug === 'all') {
