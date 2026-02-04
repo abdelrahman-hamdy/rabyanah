@@ -38,17 +38,18 @@ class HomeController extends Controller
                 ->get()
         );
 
-        $products = CacheService::remember(
+        $productsPool = CacheService::remember(
             [CacheService::TAG_HOME, CacheService::TAG_PRODUCTS],
-            "home_products_{$locale}",
+            "home_products_pool_{$locale}",
             CacheService::TTL_WEEK,
             fn () => Product::active()
                 ->where('is_featured', false)
                 ->with(['category'])
-                ->inRandomOrder()
-                ->take(8)
+                ->take(50)
                 ->get()
         );
+
+        $products = $productsPool->shuffle()->take(8);
 
         $brands = CacheService::remember(
             [CacheService::TAG_HOME, CacheService::TAG_BRANDS],
@@ -73,15 +74,14 @@ class HomeController extends Controller
         $locale = app()->getLocale();
         $cacheKey = "catalog_products_{$categorySlug}_{$locale}";
 
-        $products = CacheService::remember(
+        $productsPool = CacheService::remember(
             [CacheService::TAG_HOME, CacheService::TAG_PRODUCTS],
-            $cacheKey,
+            $cacheKey.'_pool',
             CacheService::TTL_WEEK,
             function () use ($categorySlug) {
                 $query = Product::active()
                     ->with(['category:id,name,name_ar,slug'])
-                    ->inRandomOrder()
-                    ->take(8);
+                    ->take(50);
 
                 if ($categorySlug === 'all') {
                     $query->where('is_featured', false);
@@ -92,6 +92,8 @@ class HomeController extends Controller
                 return $query->get();
             }
         );
+
+        $products = $productsPool->shuffle()->take(8);
 
         $html = view('components.home.products-grid', compact('products'))->render();
 
