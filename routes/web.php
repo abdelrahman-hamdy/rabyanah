@@ -19,7 +19,6 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['cache.response:604800'])->group(function () {
     // Home Page
     Route::get('/', [HomeController::class, 'index'])->name('home');
-    Route::get('/api/catalog-products', [HomeController::class, 'catalogProducts'])->name('api.catalog-products');
 
     // About Page
     Route::get('/about', [AboutController::class, 'index'])->name('about');
@@ -34,6 +33,9 @@ Route::middleware(['cache.response:604800'])->group(function () {
     // Search (1 day cache = 86400 seconds)
     Route::get('/search', [SearchController::class, 'index'])->name('search')->withoutMiddleware(['cache.response:604800'])->middleware(['cache.response:86400']);
 });
+
+// Catalog Products API (no cache - random products on each request)
+Route::get('/api/catalog-products', [HomeController::class, 'catalogProducts'])->name('api.catalog-products');
 
 // Contact
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
